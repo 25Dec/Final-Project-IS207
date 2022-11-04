@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { AiOutlineUser, AiOutlineLock, AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
-import "../pages/login/login.css";
+import "./Login.css";
 
 const LoginForm = () => {
 	/* Xử lí sự kiện khi focus vào ô nhập password sẽ hiện icon show password 
