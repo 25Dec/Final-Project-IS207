@@ -1,0 +1,96 @@
+::-webkit-scrollbar {
+	display: none;
+}
+#LoginSection {
+	width: 100vw;
+	height: 100vh;
+	background-image: url(../../assets/img/loginbg-day.png);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+#LoginForm {
+	width: 25rem;
+	height: 20rem;
+	padding: 1rem;
+	border-radius: 0.5rem;
+	background: var(--color-LoginPage-2);
+}
+#LoginForm table tr:nth-child(1) th {
+	font-size: 1.5rem;
+	padding: 0.5rem 0;
+	color: var(--color-LoginPage-3);
+}
+#LoginForm form,
+#LoginForm table {
+	width: 100%;
+	height: 100%;
+}
+#LoginForm table input {
+	width: 100%;
+	padding: 1rem 3.5rem 1rem 2.25rem;
+	font-size: 1rem;
+	border: transparent;
+	border-radius: 0.5rem;
+	border-bottom: 1px solid var(--color-LoginPage-1);
+	outline: transparent;
+	background: transparent;
+}
+#LoginForm ::placeholder {
+	color: var(--color-LoginPage-1);
+}
+#LoginForm table tbody tr:nth-child(1),
+#LoginForm table tbody tr:nth-child(2) {
+	position: relative;
+}
+span.icon {
+	font-size: 1rem;
+	color: var(--color-LoginPage-1);
+	position: absolute;
+}
+.icon.username,
+.icon.password {
+	bottom: 0.8rem;
+	transform: translateY(-50%);
+	left: 10px;
+}
+.icon.showPassword {
+	width: 25px;
+	height: 25px;
+	padding: 1px;
+	font-size: 1.25rem;
+	text-align: center;
+	border-radius: 50%;
+	bottom: 1.5rem;
+	right: 0.5rem;
+	cursor: pointer;
+	display: none;
+}
+.icon.showPassword:hover {
+	background: var(--color-LoginPage-4);
+}
+#LoginForm table input:focus {
+	border-bottom: 1px solid var(--color-LoginPage-1);
+	outline: 1px solid var(--color-LoginPage-1);
+}
+#LoginForm table button {
+	background: var(--color-beigi-grey);
+	color: var(--color-LoginPage-5);
+	font-size: 1.25rem;
+}
+#LoginForm table button:hover {
+	background: var(--color-brown-light);
+}
+/* Tablet Responsive */
+@media only screen and (max-width: 1023px) and (min-width: 740px) {
+}
+/* Mobile Responsive */
+@media only screen and (max-width: 739px) {
+	#LoginForm {
+		width: 22rem;
+	}
+}

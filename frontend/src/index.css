@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap");
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+:root {
+	/* colors */
+	--color-brown: #6b4725;
+	--color-brown-light: #bf8f60;
+	--color-beigi: #ecdbc8;
+	--color-beigi-grey: #a7a791;
+	--color-green: #78971c;
+
+	--color-LoginPage-1: rgba(85, 85, 85, 0.5);
+	--color-LoginPage-2: rgba(255, 255, 255, 0.85);
+	--color-LoginPage-3: rgba(12, 12, 12, 0.5);
+	--color-LoginPage-4: rgba(12, 12, 12, 0.1);
+	--color-LoginPage-5: rgba(255, 255, 255);
+
+	/* transition */
+	--transition: all 0.5s linear;
+}
+html {
+	scroll-behavior: smooth;
+}
+body {
+	width: 100vw;
+	height: 100vh;
+	font-family: "Poppins", sans-serif;
+}
+a {
+	text-decoration: none;
+}
+button {
+	width: 100%;
+	padding: 1rem;
+	border-radius: 0.5rem;
+	font-size: 1rem;
+	border: none;
+	outline: none;
+	transition: var(--transition);
+	cursor: pointer;
+}
