@@ -6,6 +6,6 @@ footer {
 	justify-content: center;
 	align-items: center;
 	padding: 20px;
-	background: var(--color-beigi);
+	background: rgba(255, 255, 255, 0.8);
 	color: rgba(12, 12, 12, 0.7);
 }

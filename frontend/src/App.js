@@ -1,13 +1,11 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Login from "./pages/login/Login";
-import Footer from "./components/footer/Footer";
+import LoginSection from "./pages/login/LoginSection";
 
 const App = () => {
 	return (
 		<div id="App">
-			<Login />
-			<Footer />
+			<LoginSection />
 		</div>
 	);
 };
