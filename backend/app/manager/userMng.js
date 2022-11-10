@@ -15,7 +15,8 @@ const Pieces = require('../utils/pieces');
 
 module.exports = {
     authenticate: function (loginName, password, callback) {
-        //console.log(loginName);
+        console.log(loginName);
+        console.log(password);
         try {
             if (!Pieces.VariableBaseTypeChecking(loginName,'string') ) {
                 return callback(8, 'invalid_login_name', 422, 'loginName is not a string', null);
@@ -31,7 +32,6 @@ module.exports = {
                 }
 
                 if (user) {
-                    // console.log(user);
                     BCrypt.compare(password, user.password, function (error, result) {
                         if (result === true) {
                             return callback(null, null, 200, null, user);
