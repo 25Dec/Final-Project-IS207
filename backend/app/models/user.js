@@ -38,7 +38,7 @@ let UserSchema = new Schema({
         maxlength:2,
         default: 'en'
     },
-    fulName:{
+    fullName:{
         type: String,
         minlength: 3,
         maxlength: 256,
