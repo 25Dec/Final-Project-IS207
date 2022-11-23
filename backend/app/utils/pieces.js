@@ -32,6 +32,7 @@ const VariableBaseTypeChecking = function ( value, type, length )
 /**
  * @return {boolean}
  */
+// check thử cái type này nó có trùng với cái nào trong cái constant hay không?
 const VariableEnumChecking = function ( value, arrayData )
 {
     let bResult;
