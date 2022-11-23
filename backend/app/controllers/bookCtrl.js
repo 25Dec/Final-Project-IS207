@@ -74,4 +74,31 @@ module.exports = {
             }
         });
     },
+
+    update: function (req, res) {
+        const accessUserId = req.body.accessUserId || '';
+        const accessUserType = req.body.accessUserRight || '';
+
+        let id = req.params.id || '';
+
+        if(id === 'deletes'){
+            let idList = req.body.ids || '';
+            BookManager.deletes(accessUserId, accessUserType, idList, function (errorCode, errorMessage, httpCode, errorDescription) {
+                if (errorCode) {
+                    return Rest.sendError(res, errorCode, errorMessage, httpCode, errorDescription);
+                }
+                return Rest.sendSuccess(res, null, httpCode);
+            });
+        }else {
+            let updateData = req.body || '';
+            BookManager.update(accessUserId, accessUserType, id, updateData, function (errorCode, errorMessage, httpCode, errorDescription) {
+                if (errorCode) {
+                    return Rest.sendError(res, errorCode, errorMessage, httpCode, errorDescription);
+                }
+                let resData = {};
+                resData.id = id;
+                return Rest.sendSuccess(res, resData, httpCode);
+            });
+        }
+    }
 };

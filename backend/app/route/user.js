@@ -20,7 +20,7 @@ module.exports = function (app) {
      * @apiParam {String} password a string with 6 <= length <= 64
      *
      * @apiExample Example usage:
-     * curl -i https://conntomongodb.herokuapp.com/v1/auth/users
+     * curl -i https://localhost:3001/v1/auth/users
      *
      * @apiSuccess {String} id the ID of created user
      * @apiSuccessExample Success-Response:
@@ -56,7 +56,7 @@ module.exports = function (app) {
      * @apiParam {String} code a string with 4 < length < 64
      *
      * @apiExample Example usage:
-     * curl -i https://conntomongodb.herokuapp.com/v1/login
+     * curl -i https://localhost:3001/v1/login
      *
      * @apiSuccess {object} data the user data with token
      * @apiSuccess {String} result ok or fail
@@ -100,7 +100,7 @@ module.exports = function (app) {
      * @apiParam {string} id ID of user, on params
      *
      * @apiExample Example usage:
-     * curl -i https://conntomongodb.herokuapp.com/v1/auth/users/2
+     * curl -i https://localhost:3001/v1/auth/users/2
      *
      * @apiSuccess {String} id the ID of group
      * @apiSuccess {String} loginName login name of user
@@ -150,7 +150,7 @@ module.exports = function (app) {
      * @apiParam {String} q Text filter for data (N/A)
      *
      * @apiExample Example usage:
-     * curl -i https://conntomongodb.herokuapp.com/v1/auth/users
+     * curl -i https://localhost:3001/v1/auth/users
      *
      * @apiSuccess {Object[]} data the list of data
      * @apiSuccess {Object} items {begin, end, total}
@@ -194,7 +194,7 @@ module.exports = function (app) {
      * @apiParam {String} lastName last name of user
      *
      * @apiExample Example usage:
-     * curl -i  https://conntomongodb.herokuapp.com/v1/auth/users/2
+     * curl -i  https://localhost:3001/v1/auth/users/2
      *
      * @apiSuccess {String} id the ID of updated user
      * @apiSuccessExample Success-Response:
@@ -230,7 +230,7 @@ module.exports = function (app) {
      * @apiParam {String} id ID of user
      *
      * @apiExample Example usage:
-     * curl -i  https://conntomongodb.herokuapp.com/v1/auth/users/2
+     * curl -i  https://localhost:3001/v1/auth/users/2
      *
      * @apiSuccess {String} id Id of deleted user
      * @apiSuccessExample Success-Response:
