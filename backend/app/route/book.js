@@ -6,22 +6,22 @@ const BookCtrl = require('../controllers/bookCtrl');
 
 module.exports = function (app) {
     /**
-     * @api {POST} /v1/auth/devices Create a Device
+     * @api {POST} /v1/auth/books Create a book
      * @apiVersion 1.0.0
-     * @apiName Create_Device
-     * @apiGroup Device
+     * @apiName Create_book
+     * @apiGroup book
      * @apiPermission Every of user
      * @apiHeader {String} access_token json web token to access to data
      *
-     * @apiDescription Create a device by every one
+     * @apiDescription Create a book by every one
      *
      * @apiParam {string}  a unique id int with 6 <= length <= 64
      * @apiParam {string} a unique code string with length <= 64
      *
      * @apiExample Example usage:
-     * curl -i https://conntomysql.herokuapp.com/v1/auth/devices
+     * curl -i https://conntomysql.herokuapp.com/v1/auth/books
      *
-     * @apiSuccess {String} id the device is the data of device
+     * @apiSuccess {String} id the book is the data of book
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
      *     {
@@ -41,27 +41,27 @@ module.exports = function (app) {
      */
     app.post('/v1/auth/books', BookCtrl.create);
     /**
-     * @api {GET} /v1/auth/devices/:id Get_A_Device
+     * @api {GET} /v1/auth/books/:id Get_A_book
      * @apiVersion 1.0.0
-     * @apiName get_a_Device
-     * @apiGroup Device
+     * @apiName get_a_book
+     * @apiGroup book
      * @apiPermission Every type of user
      * @apiHeader {String} access_token json web token to access to data
      *
-     * @apiDescription Get a device
+     * @apiDescription Get a book
      *
-     * @apiParam {string} id of the device, on params
+     * @apiParam {string} id of the book, on params
      *
      * @apiExample Example usage:
-     * curl -i https://conntomysql.herokuapp.com/v1/auth/devices/3
+     * curl -i https://conntomysql.herokuapp.com/v1/auth/books/3
      *
-     * @apiSuccess {Int} id the ID of a device
-     * @apiSuccess {Char} code login name of a device
-     * @apiSuccess {String} name display name of a device
-     * @apiSuccess {String} desc description of device
-     * @apiSuccess {Bool} isAlive describe state of a device
-     * @apiSuccess {Int} createdBy display people who created the device
-     * @apiSuccess {Int} updatedBy display people who updated the device
+     * @apiSuccess {Int} id the ID of a book
+     * @apiSuccess {Char} code login name of a book
+     * @apiSuccess {String} name display name of a book
+     * @apiSuccess {String} desc description of book
+     * @apiSuccess {Bool} isAlive describe state of a book
+     * @apiSuccess {Int} createdBy display people who created the book
+     * @apiSuccess {Int} updatedBy display people who updated the book
      * @apiSuccess {Date} createdAt display the day when it was created
      * @apiSuccess {Date} updatedAt display the day when it was updated
      *
@@ -90,14 +90,14 @@ module.exports = function (app) {
      */
     app.get('/v1/auth/books/:id', BookCtrl.getOne);
     /**
-     * @api {GET} /v1/auth/devices Get List Of Devices
+     * @api {GET} /v1/auth/books Get List Of books
      * @apiVersion 1.0.0
      * @apiName getAll
-     * @apiGroup Device
+     * @apiGroup book
      * @apiPermission Moderator, administrator, super admin
      * @apiHeader {String} access_token json web token to access to data
      *
-     * @apiDescription Get all devices
+     * @apiDescription Get all books
      *
      * @apiParam {Number} page Page which we want to get (N/A)
      * @apiParam {Number} perPage Item per page (N/A)
@@ -106,7 +106,7 @@ module.exports = function (app) {
      * @apiParam {String} q Text filter for data (N/A)
      *
      * @apiExample Example usage:
-     * curl -i https://conntomysql.herokuapp.com/v1/auth/devices
+     * curl -i https://conntomysql.herokuapp.com/v1/auth/books
      *
      * @apiSuccess {Object[]} data the list of data
      * @apiSuccess {Object} items {begin, end, total}
@@ -132,27 +132,27 @@ module.exports = function (app) {
      *       "message": "invalid input"
      *     }
      */
-    app.get('/v1/auth/books', BookCtrl.getAll);
+    app.get('/v1/auth/books/:id', BookCtrl.getAll);
     /**
-     * @api {PUT} /v1/auth/devices/:id Update a Device
+     * @api {PUT} /v1/auth/books/:id Update a book
      * @apiVersion 1.0.0
      * @apiName update
-     * @apiGroup Device
+     * @apiGroup book
      * @apiPermission Moderator, Administrator, Super Admin
      * @apiHeader {String} access_token json web token to access to data
      *
-     * @apiDescription Update a device information
+     * @apiDescription Update a book information
      *
-     * @apiParam {String} id ID of a device, on params
-     * @apiParam {char(5)} code Code of a device
-     * @apiParam {String} name Name of a device
-     * @apiParam {String} desc Description of a device
-     * @apiParam {Bool} isAlive that is status of a device
+     * @apiParam {String} id ID of a book, on params
+     * @apiParam {char(5)} code Code of a book
+     * @apiParam {String} name Name of a book
+     * @apiParam {String} desc Description of a book
+     * @apiParam {Bool} isAlive that is status of a book
      *
      * @apiExample Example usage:
-     * curl -i https://conntomysql.herokuapp.com/v1/auth/devices/5
+     * curl -i https://conntomysql.herokuapp.com/v1/auth/books/5
      *
-     * @apiSuccess {String} id the ID of updated a device
+     * @apiSuccess {String} id the ID of updated a book
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
      *     {
@@ -172,23 +172,23 @@ module.exports = function (app) {
      *       "message": "invalid input"
      *     }
      */
-    //app.put('/v1/auth/books/:id', BookCtrl.update);
+    app.put('/v1/auth/books/:id', BookCtrl.update);
     /**
-     * @api {DELETE} /v1/auth/devices/:id Delete a Device
+     * @api {DELETE} /v1/auth/books/:id Delete a Book
      * @apiVersion 1.0.0
      * @apiName delete
-     * @apiGroup Device
+     * @apiGroup Book
      * @apiPermission Moderator, Administrator, Super Admin
      * @apiHeader {String} access_token json web token to access to data
      *
-     * @apiDescription delete a device
+     * @apiDescription delete a Book
      *
-     * @apiParam {String} id ID of a Device
+     * @apiParam {String} id ID of a Book
      *
      * @apiExample Example usage:
-     * curl -i https://conntomysql.herokuapp.com/v1/auth/devices/3
+     * curl -i https://conntomysql.herokuapp.com/v1/auth/books/3
      *
-     * @apiSuccess {String} id Id of a deleted device
+     * @apiSuccess {String} id Id of a deleted book
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
      *     {
