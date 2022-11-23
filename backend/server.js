@@ -51,8 +51,6 @@ mongoose.connect(Config.mongodb.uri, ()=>{
 
 const Port = parseInt(Config.port) + (process.env.NODE_APP_INSTANCE ? parseInt(process.env.NODE_APP_INSTANCE) : 0);
 
-// Create App
-// Start App: http:IP_Address:port
 App.listen(Port, ()=>{
     Console.log('API started to listening on port %d', Port);
 });
