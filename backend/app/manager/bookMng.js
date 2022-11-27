@@ -12,6 +12,7 @@ const Pieces = require('../utils/pieces');
 const Config = require('../configs/gConfig');
 const User = require('../models/user');
 const {USER_TYPE} = require("../configs/constant");
+const BCrypt = require("bcryptjs");
 
 exports.create = function (accessUserId, accessUserRight, accessUserName, data, callback) {
     try {
@@ -312,155 +313,101 @@ exports.parseFilter = function (accessUserId, accessUserRight, condition, filter
     }
 };
 
-exports.update = function (accessUserId, accessUserType, deviceId, bookData, callback) {
+exports.update = function (accessUserId, accessUserType, bookId, bookData, callback) {
     try {
-        let queryObj = {};
-        let where = {};
+        let options = {
+            upsert: false,
+            new: true,
+            setDefaultsOnInsert: true,
+            projection: {password: false, socialNetwork: false}
+        };
 
-        if ( !( Pieces.VariableBaseTypeChecking(deviceId,'string')
-                && Validator.isInt(deviceId) )
-            && !Pieces.VariableBaseTypeChecking(deviceId,'number') ){
-            return callback(2, 'invalid_device_id', 400, 'device id is incorrect', null);
+        if ( Constant.USER_RIGHT_MANAGER_ENUM.indexOf(accessUserType) < 0 ) {
+            return callback(8, 'invalid_right', 403, null, null);
         }
 
-        if ( !bookData ) {
-            return callback(2, 'invalid_device_data', 400, null);
+        let query = {};
+        let userRightIdx = Constant.USER_RIGHT_MANAGER_ENUM.indexOf(accessUserType);
+        let lowerUserRightList=[];
+        if( userRightIdx >= 0 ){
+            lowerUserRightList = Constant.USER_RIGHT_ENUM.slice(0, userRightIdx);
         }
 
-        if (accessUserType < Constant.USER_TYPE.MODERATOR){
-            where.createdBy = accessUserId;
-            where.deleted = { $ne: Constant.DELETED.YES };
+        let update = {};
+
+        update.updatedBy=accessUserId;
+        update.updatedAt= new Date();
+
+        if (Pieces.VariableEnumChecking(bookData.status, Constant.BOOK_STATUS)) {
+            update.status = bookData.status;
+        }else{
+            update.status = Constant.BOOK_STATUS[1];
         }
 
-        where.id = deviceId;
-
-        queryObj.updater=accessUserId;
-        queryObj.updatedAt = new Date();
-
-        if ( bookData.deleted === Constant.DELETED.YES ||  bookData.deleted === Constant.DELETED.NO ) {
-            queryObj.deleted = bookData.deleted;
+        if ( Pieces.VariableBaseTypeChecking(bookData.code, 'string')
+            && Validator.isAlphanumeric(bookData.code)
+            && Validator.isLowercase(bookData.code)
+            && Validator.isLength(bookData.code, {min: 4, max: 64}) ) {
+            update.code = bookData.code;
         }
 
-        if ( Pieces.VariableBaseTypeChecking(bookData.code, 'string') ) {
-            queryObj.code = bookData.code;
+        if ( Pieces.VariableBaseTypeChecking(bookData.bookName, 'string')
+            && Validator.isAlphanumeric(bookData.bookName)
+            && Validator.isLowercase(bookData.bookName)
+            && Validator.isLength(bookData.bookName, {min: 4, max: 64}) ) {
+            update.bookName = bookData.bookName;
         }
 
-        if ( Pieces.VariableBaseTypeChecking(bookData.authorName, 'string') ) {
-            queryObj.authorName = bookData.authorName;
+        if ( Pieces.VariableBaseTypeChecking(bookData.authorName, 'string')
+            && Validator.isLength(bookData.authorName, {min: 4, max: 64}) ) {
+            update.authorName = bookData.authorName;
         }
 
-        if( Pieces.VariableBaseTypeChecking(bookData.name, 'string')
-            && Validator.isLength(bookData.name, {min: 4, max: 128}) ){
-            queryObj.name = bookData.name;
+        if ( (Validator.isNumeric(bookData.yearPublication) && bookData.yearPublication>0)
+            && Validator.isLength(bookData.yearPublication, {min: 1, max: 5})) {
+            update.yearPublication = bookData.yearPublication;
+        }
+        else{
+            update.yearPublication = -1;
         }
 
-        if (Pieces.VariableBaseTypeChecking(bookData.desc,'string') ) {
-            queryObj.desc = bookData.desc;
+
+
+        // if ( Pieces.VariableBaseTypeChecking(bookData.password, 'string')
+        //     && Validator.isLength(bookData.password, {min: 4, max: 64}) ) {
+        //     update.password = BCrypt.hashSync(bookData.password, 10);
+        // }
+        //
+        // if ( Pieces.VariableBaseTypeChecking(bookData.fullName, 'string')
+        //     && Validator.isLength(bookData.fullName, {min: 4, max: 64}) ) {
+        //     update.fullName = bookData.fullName;
+        // }
+        //
+        // if (Pieces.VariableBaseTypeChecking(bookData.email, 'string')
+        //     && Validator.isEmail(bookData.email)) {
+        //     update.email = bookData.email;
+        // }
+
+        if(Pieces.VariableEnumChecking(bookData.status, Constant.STATUS_ENUM)){
+            update.status = bookData.status;
+        }
+
+        if(Pieces.VariableEnumChecking(bookData.userRight, Constant.USER_RIGHT_ENUM)){
+            update.userRight = bookData.userRight;
         }
 
 
-        Device.findOne({where: where}).then(device=>{
-            "use strict";
-            if(device){
-                Device.update(
-                    queryObj,
-                    {where: where}).then(result=>{
-                    if(result !== null && result.length > 0 && result[0] > 0){
-                        if(Pieces.VariableBaseTypeChecking(device.socketIO,  'string')){
-                            let data = {};
-                            if(queryObj.name && queryObj.name !== device.name){
-                                data.name = queryObj.name;
-                            }
-
-                            if(queryObj.desc && queryObj.desc !== device.desc){
-                                data.desc = queryObj.desc;
-                            }
-                            data.config = {};
-                            data.config.general = {};
-                            // config.general
-                            if(queryObj.adminPassword && queryObj.adminPassword !== device.adminPassword){
-                                data.config.general.adminPassword = queryObj.adminPassword;
-                            }
-                            if(queryObj.isFullscreen !== null && queryObj.isFullscreen !== device.isFullscreen){
-                                data.config.general.isAppFullscreen = queryObj.isFullscreen;
-                            }
-                            data.config.general.extCode = {};
-                            if(queryObj.companyCode && queryObj.companyCode !== device.companyCode){
-                                data.config.general.extCode.company = queryObj.companyCode;
-                            }
-                            if(queryObj.siteCode !== null && queryObj.siteCode !== device.siteCode){
-                                data.config.general.extCode.site = queryObj.siteCode;
-                            }
-                            data.config.general.timer = {};
-                            if(queryObj.autoShutdownTime && queryObj.autoShutdownTime !== device.autoShutdownTime){
-                                data.config.general.timer.endTime = queryObj.autoShutdownTime;
-                            }
-                            if(queryObj.autoShutdownTimeMode && queryObj.autoShutdownTimeMode !== device.autoShutdownTimeMode){
-                                data.config.general.timer.modeTime = queryObj.autoShutdownTimeMode;
-                            }
-                            if(queryObj.productModeTime && queryObj.productModeTime !== device.productModeTime){
-                                data.config.general.timer.barcodeTime = queryObj.productModeTime;
-                            }
-                            if(queryObj.previewTime && queryObj.previewTime !== device.previewTime){
-                                data.config.general.timer.previewTime = queryObj.previewTime;
-                            }
-
-                            data.config.mirror = {};
-                            if(queryObj.countdownTime && queryObj.countdownTime !== device.countdownTime){
-                                data.config.mirror.countDownTime = queryObj.countdownTime;
-                            }
-                            if(queryObj.isNeedOpenHelp && queryObj.isNeedOpenHelp !== device.isNeedOpenHelp){
-                                data.config.mirror.isNeedOpenHelp = queryObj.isNeedOpenHelp;
-                            }
-
-                            data.config.development = {};
-                            if(queryObj.isDebugToolOpened && queryObj.isDebugToolOpened !== device.isDebugToolOpened){
-                                data.config.development.isDebugToolOpened = queryObj.isDebugToolOpened;
-                            }
-                            if(queryObj.isCamInfoDisplayed && queryObj.isCamInfoDisplayed !== device.isCamInfoDisplayed){
-                                data.config.development.isCamInfoDisplayed = queryObj.isCamInfoDisplayed;
-                            }
-
-                            data.config.device = {};
-                            data.config.device.camera = {};
-                            if(queryObj.resolution && queryObj.resolution !== device.resolution){
-                                data.config.device.camera.resolution = queryObj.resolution;
-                            }
-                            if(queryObj.camera && queryObj.camera !== device.camera){
-                                data.config.device.camera.device = queryObj.camera;
-                            }
-                            if(queryObj.rotate && queryObj.rotate !== device.rotate){
-                                data.config.device.camera.rotate = queryObj.rotate;
-                            }
-
-                            data.config.device.sensor = {};
-                            if(queryObj.comName && queryObj.comName !== device.comName){
-                                data.config.device.sensor.port = queryObj.comName;
-                            }
-                            if(queryObj.isMovementEnabled && queryObj.isMovementEnabled !== device.isMovementEnabled){
-                                data.config.device.sensor.isMovementEnabled = queryObj.isMovementEnabled;
-                            }
-                            if(queryObj.isIrEnabled && queryObj.isIrEnabled !== device.isIrEnabled){
-                                data.config.device.sensor.isIrEnabled = queryObj.isIrEnabled;
-                            }
-
-                            SocketManager.sendCmd(device.socketIO, 'updateSetting', data);
-                        }
-                        return callback(null, null, 200, null, deviceId);
-                    }else{
-                        return callback(2, 'invalid_device', 400, null, null);
-                    }
-                }).catch(function(error){
-                    "use strict";
-                    return callback(2, 'update_device_fail', 400, error, null);
-                });
-            }else{
-                return callback(2, 'invalid_device', 400, null, null);
+        Book.findOneAndUpdate(query, update, options, function (error, book) {
+            if (error) {
+                return callback(8, 'find_update_fail', 420, error, null);
             }
-        }).catch(function(error){
-            "use strict";
-            return callback(2, 'find_one_device_fail', 400, error, null);
+            if(book){
+                return callback(null, null, 200, null, book);
+            }else{
+                return callback(8, 'unavailable', 400, null, null);
+            }
         });
+
     }catch(error){
         return callback(2, 'update_device_fail', 400, error);
     }

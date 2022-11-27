@@ -93,7 +93,7 @@ module.exports = {
         }
     },
 
-    update: function (accessUserId, accessUserRight, accessLoginName, userId, updateData, callback) {
+    update: function (accessUserId, accessUserRight, accessLoginName, userId, bookData, callback) {
         try {
             console.log(userId);
             if ( !Pieces.VariableBaseTypeChecking(userId,'string')
@@ -122,47 +122,47 @@ module.exports = {
 
             update.updater=accessUserId;
 
-            if ( Pieces.VariableBaseTypeChecking(updateData.loginName, 'string')
-                && Validator.isAlphanumeric(updateData.loginName)
-                && Validator.isLowercase(updateData.loginName)
-                && Validator.isLength(updateData.loginName, {min: 4, max: 64}) ) {
-                update.loginName = updateData.loginName;
+            if ( Pieces.VariableBaseTypeChecking(bookData.loginName, 'string')
+                && Validator.isAlphanumeric(bookData.loginName)
+                && Validator.isLowercase(bookData.loginName)
+                && Validator.isLength(bookData.loginName, {min: 4, max: 64}) ) {
+                update.loginName = bookData.loginName;
             }
 
-            if ( Pieces.VariableBaseTypeChecking(updateData.displayName, 'string')
-                && Validator.isLength(updateData.displayName, {min: 4, max: 64}) ) {
-                update.displayName = updateData.displayName;
+            if ( Pieces.VariableBaseTypeChecking(bookData.displayName, 'string')
+                && Validator.isLength(bookData.displayName, {min: 4, max: 64}) ) {
+                update.displayName = bookData.displayName;
             }
 
 
-            if ( Pieces.VariableBaseTypeChecking(updateData.password, 'string')
-                && Validator.isLength(updateData.password, {min: 4, max: 64}) ) {
-                update.password = BCrypt.hashSync(updateData.password, 10);
+            if ( Pieces.VariableBaseTypeChecking(bookData.password, 'string')
+                && Validator.isLength(bookData.password, {min: 4, max: 64}) ) {
+                update.password = BCrypt.hashSync(bookData.password, 10);
             }
 
-            if ( Pieces.VariableBaseTypeChecking(updateData.fullName, 'string')
-                && Validator.isLength(updateData.fullName, {min: 4, max: 64}) ) {
-                update.fullName = updateData.fullName;
+            if ( Pieces.VariableBaseTypeChecking(bookData.fullName, 'string')
+                && Validator.isLength(bookData.fullName, {min: 4, max: 64}) ) {
+                update.fullName = bookData.fullName;
             }
 
-            if (Pieces.VariableBaseTypeChecking(updateData.email, 'string')
-                && Validator.isEmail(updateData.email)) {
-                update.email = updateData.email;
+            if (Pieces.VariableBaseTypeChecking(bookData.email, 'string')
+                && Validator.isEmail(bookData.email)) {
+                update.email = bookData.email;
             }
 
-            if(Pieces.VariableEnumChecking(updateData.status, Constant.STATUS_ENUM)){
-                update.status = updateData.status;
+            if(Pieces.VariableEnumChecking(bookData.status, Constant.STATUS_ENUM)){
+                update.status = bookData.status;
             }
 
-            if(Pieces.VariableEnumChecking(updateData.userRight, Constant.USER_RIGHT_ENUM)){
-                update.userRight = updateData.userRight;
+            if(Pieces.VariableEnumChecking(bookData.userRight, Constant.USER_RIGHT_ENUM)){
+                update.userRight = bookData.userRight;
             }
 
             update.profile = {};
 
-            if( Pieces.VariableBaseTypeChecking(updateData.language, 'string')
-                && Validator.isLength(updateData.language, {min: 2, max: 2}) ){
-                update.profile.language = updateData.language;
+            if( Pieces.VariableBaseTypeChecking(bookData.language, 'string')
+                && Validator.isLength(bookData.language, {min: 2, max: 2}) ){
+                update.profile.language = bookData.language;
             }
 
             let options = {

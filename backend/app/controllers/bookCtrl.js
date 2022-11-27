@@ -90,8 +90,8 @@ module.exports = {
                 return Rest.sendSuccess(res, null, httpCode);
             });
         }else {
-            let updateData = req.body || '';
-            BookManager.update(accessUserId, accessUserType, id, updateData, function (errorCode, errorMessage, httpCode, errorDescription) {
+            let bookData = req.body || '';
+            BookManager.update(accessUserId, accessUserType, id, bookData, function (errorCode, errorMessage, httpCode, errorDescription) {
                 if (errorCode) {
                     return Rest.sendError(res, errorCode, errorMessage, httpCode, errorDescription);
                 }

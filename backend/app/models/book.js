@@ -66,6 +66,11 @@ let BookSchema = new Schema({
     updatedAt: {
         type: Date,
         default: Date.now
+    },
+    deleted: {
+        type: String,
+        require: true,
+        default: Constant.DELETED[1]
     }
 });
 
