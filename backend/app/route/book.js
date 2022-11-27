@@ -132,7 +132,7 @@ module.exports = function (app) {
      *       "message": "invalid input"
      *     }
      */
-    app.get('/v1/auth/books/:id', BookCtrl.getAll);
+    app.get('/v1/auth/books/', BookCtrl.getAll);
     /**
      * @api {PUT} /v1/auth/books/:id Update a book
      * @apiVersion 1.0.0

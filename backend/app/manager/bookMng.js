@@ -19,15 +19,27 @@ exports.create = function (accessUserId, accessUserRight, accessUserName, data, 
             return callback(2, 'invalid_book_code', 400, 'code is not a string', null);
         }
 
-        if (!Validator.isAlphanumeric(data.bookName)
+        if (!Pieces.VariableBaseTypeChecking(data.bookName, 'string')
             || !Validator.isLength(data.bookName, {min: 4, max: 128}) ) {
             return callback(2, 'invalid_book_name', 400, 'name is not alphanumeric and 4 - 128 characters', null);
+        }
+
+        if (!Validator.isAlphanumeric(data.authorName)
+            || !Validator.isLength(data.authorName, {min: 4, max: 128}) ) {
+            return callback(2, 'invalid_author_name', 400, 'name is not alphanumeric and 4 - 128 characters', null);
         }
 
         if (Constant.USER_RIGHT_MANAGER_ENUM.indexOf(accessUserRight) < 0 ) {
             return callback(8, 'invalid_right', 403, 'you must be admin to do this process', null);
         }
 
+        if ( Pieces.VariableBaseTypeChecking(data.yearPublication,'int') ) {
+            return callback(2, 'invalid_book_yearPublication', 400, 'code is not a int', null);
+        }
+
+        if ( Pieces.VariableBaseTypeChecking(data.quantity,'int') ) {
+            return callback(2, 'invalid_book_quantity', 400, 'code is not a int', null);
+        }
 
         let queryObj = {};
         queryObj.code = data.code;
@@ -36,8 +48,11 @@ exports.create = function (accessUserId, accessUserRight, accessUserName, data, 
         queryObj.bookName = data.bookName;
         queryObj.updatedBy = accessUserId;
         queryObj.createdBy = accessUserId;
+        queryObj.authorName = data.authorName;
+        queryObj.yearPublication = data.yearPublication;
+        queryObj.quantity = data.quantity;
 
-        Book.create(queryObj).then(book=>{
+            Book.create(queryObj).then(book=>{
             "use strict";
             return callback(null, null, 200, null, book);
         }).catch(function(error){
@@ -297,7 +312,7 @@ exports.parseFilter = function (accessUserId, accessUserRight, condition, filter
     }
 };
 
-exports.update = function (accessUserId, accessUserType, deviceId, deviceData, callback) {
+exports.update = function (accessUserId, accessUserType, deviceId, bookData, callback) {
     try {
         let queryObj = {};
         let where = {};
@@ -308,7 +323,7 @@ exports.update = function (accessUserId, accessUserType, deviceId, deviceData, c
             return callback(2, 'invalid_device_id', 400, 'device id is incorrect', null);
         }
 
-        if ( !deviceData ) {
+        if ( !bookData ) {
             return callback(2, 'invalid_device_data', 400, null);
         }
 
@@ -322,21 +337,25 @@ exports.update = function (accessUserId, accessUserType, deviceId, deviceData, c
         queryObj.updater=accessUserId;
         queryObj.updatedAt = new Date();
 
-        if ( deviceData.deleted === Constant.DELETED.YES ||  deviceData.deleted === Constant.DELETED.NO ) {
-            queryObj.deleted = deviceData.deleted;
+        if ( bookData.deleted === Constant.DELETED.YES ||  bookData.deleted === Constant.DELETED.NO ) {
+            queryObj.deleted = bookData.deleted;
         }
 
-        if ( Pieces.VariableBaseTypeChecking(deviceData.code, 'string') ) {
-            queryObj.code = deviceData.code;
+        if ( Pieces.VariableBaseTypeChecking(bookData.code, 'string') ) {
+            queryObj.code = bookData.code;
         }
 
-        if( Pieces.VariableBaseTypeChecking(deviceData.name, 'string')
-            && Validator.isLength(deviceData.name, {min: 4, max: 128}) ){
-            queryObj.name = deviceData.name;
+        if ( Pieces.VariableBaseTypeChecking(bookData.authorName, 'string') ) {
+            queryObj.authorName = bookData.authorName;
         }
 
-        if (Pieces.VariableBaseTypeChecking(deviceData.desc,'string') ) {
-            queryObj.desc = deviceData.desc;
+        if( Pieces.VariableBaseTypeChecking(bookData.name, 'string')
+            && Validator.isLength(bookData.name, {min: 4, max: 128}) ){
+            queryObj.name = bookData.name;
+        }
+
+        if (Pieces.VariableBaseTypeChecking(bookData.desc,'string') ) {
+            queryObj.desc = bookData.desc;
         }
 
 

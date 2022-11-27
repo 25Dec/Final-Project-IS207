@@ -22,6 +22,7 @@ const sendSuccess = function (res, data, iHttpCode) {
     return res.json(out);
 };
 
+
 const sendSuccessDownload = function (res, absPath, isUrl) {
     if (!res) {
         return;
@@ -80,7 +81,6 @@ const sendSuccessToken = function (res, token, user) {
     out.displayName = user.displayName;
     out.email = user.email;
     out.userRight = user.userRight;
-    out.avatarUrl = user.avatarUrl;
 
     res.status(200);
     res.contentType('json');
@@ -116,5 +116,6 @@ module.exports = {
     sendError,
     sendSuccessToken,
     sendSuccessDownload,
-    sendSuccessWebContent
+    sendSuccessWebContent,
+
 };

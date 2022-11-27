@@ -40,7 +40,12 @@ let BookSchema = new Schema({
         required: true,
         default: 0
     },
-
+    quantity: {
+        type: Number,
+        minlength: 1,
+        maxlength: 3,
+        required: true
+    },
     status: {
         type: String,
         required: true,
