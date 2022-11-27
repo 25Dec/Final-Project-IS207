@@ -38,12 +38,20 @@ let UserSchema = new Schema({
         maxlength:2,
         default: 'en'
     },
-    fullName:{
+    firstName:{
         type: String,
         minlength: 3,
         maxlength: 256,
         required: true
     },
+
+    lastName:{
+        type: String,
+        minlength: 3,
+        maxlength: 256,
+        required: true
+    },
+
     email: {
         type: String,
         unique: true,

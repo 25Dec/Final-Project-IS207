@@ -336,10 +336,16 @@ module.exports = {
                 oNewUser.displayName = userData.loginName;
             }
 
-            if (Pieces.VariableBaseTypeChecking(userData.fullName, 'string')) {
-                oNewUser.fullName = userData.fullName;
+            if (Pieces.VariableBaseTypeChecking(userData.firstName, 'string')) {
+                oNewUser.firstName = userData.firstName;
             }else{
-                oNewUser.fullName = userData.loginName;
+                oNewUser.firstName = userData.firstName;
+            }
+
+            if (Pieces.VariableBaseTypeChecking(userData.lastName, 'string')) {
+                oNewUser.lastName = userData.lastName;
+            }else{
+                oNewUser.lastName = '';
             }
 
             oNewUser.save(function (error) {
