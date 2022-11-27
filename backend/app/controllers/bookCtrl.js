@@ -51,7 +51,7 @@ module.exports = {
         let id = req.params.id || '';
 
 
-            BookManager.getOne(accessUserId, id, function (errorCode, errorMessage, httpCode, errorDescription, book) { //, accessUserType
+            BookManager.getOne(accessUserId, id, function (errorCode, errorMessage, httpCode, errorDescription, book) {
                 if (errorCode) {
                     return Rest.sendError(res, errorCode, errorMessage, httpCode, errorDescription);
                 } else {
@@ -90,8 +90,8 @@ module.exports = {
                 return Rest.sendSuccess(res, null, httpCode);
             });
         }else {
-            let bookData = req.body || '';
-            BookManager.update(accessUserId, accessUserType, id, bookData, function (errorCode, errorMessage, httpCode, errorDescription) {
+            let updateData = req.body || '';
+            BookManager.update(accessUserId, accessUserType, id, updateData, function (errorCode, errorMessage, httpCode, errorDescription) {
                 if (errorCode) {
                     return Rest.sendError(res, errorCode, errorMessage, httpCode, errorDescription);
                 }

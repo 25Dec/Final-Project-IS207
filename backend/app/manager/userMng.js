@@ -93,7 +93,7 @@ module.exports = {
         }
     },
 
-    update: function (accessUserId, accessUserRight, accessLoginName, userId, bookData, callback) {
+    update: function (accessUserId, accessUserRight, accessLoginName, userId, userData, callback) {
         try {
             console.log(userId);
             if ( !Pieces.VariableBaseTypeChecking(userId,'string')
@@ -122,47 +122,47 @@ module.exports = {
 
             update.updater=accessUserId;
 
-            if ( Pieces.VariableBaseTypeChecking(bookData.loginName, 'string')
-                && Validator.isAlphanumeric(bookData.loginName)
-                && Validator.isLowercase(bookData.loginName)
-                && Validator.isLength(bookData.loginName, {min: 4, max: 64}) ) {
-                update.loginName = bookData.loginName;
+            if ( Pieces.VariableBaseTypeChecking(userData.loginName, 'string')
+                && Validator.isAlphanumeric(userData.loginName)
+                && Validator.isLowercase(userData.loginName)
+                && Validator.isLength(userData.loginName, {min: 4, max: 64}) ) {
+                update.loginName = userData.loginName;
             }
 
-            if ( Pieces.VariableBaseTypeChecking(bookData.displayName, 'string')
-                && Validator.isLength(bookData.displayName, {min: 4, max: 64}) ) {
-                update.displayName = bookData.displayName;
+            if ( Pieces.VariableBaseTypeChecking(userData.displayName, 'string')
+                && Validator.isLength(userData.displayName, {min: 4, max: 64}) ) {
+                update.displayName = userData.displayName;
             }
 
 
-            if ( Pieces.VariableBaseTypeChecking(bookData.password, 'string')
-                && Validator.isLength(bookData.password, {min: 4, max: 64}) ) {
-                update.password = BCrypt.hashSync(bookData.password, 10);
+            if ( Pieces.VariableBaseTypeChecking(userData.password, 'string')
+                && Validator.isLength(userData.password, {min: 4, max: 64}) ) {
+                update.password = BCrypt.hashSync(userData.password, 10);
             }
 
-            if ( Pieces.VariableBaseTypeChecking(bookData.fullName, 'string')
-                && Validator.isLength(bookData.fullName, {min: 4, max: 64}) ) {
-                update.fullName = bookData.fullName;
+            if ( Pieces.VariableBaseTypeChecking(userData.fullName, 'string')
+                && Validator.isLength(userData.fullName, {min: 4, max: 64}) ) {
+                update.fullName = userData.fullName;
             }
 
-            if (Pieces.VariableBaseTypeChecking(bookData.email, 'string')
-                && Validator.isEmail(bookData.email)) {
-                update.email = bookData.email;
+            if (Pieces.VariableBaseTypeChecking(userData.email, 'string')
+                && Validator.isEmail(userData.email)) {
+                update.email = userData.email;
             }
 
-            if(Pieces.VariableEnumChecking(bookData.status, Constant.STATUS_ENUM)){
-                update.status = bookData.status;
+            if(Pieces.VariableEnumChecking(userData.status, Constant.STATUS_ENUM)){
+                update.status = userData.status;
             }
 
-            if(Pieces.VariableEnumChecking(bookData.userRight, Constant.USER_RIGHT_ENUM)){
-                update.userRight = bookData.userRight;
+            if(Pieces.VariableEnumChecking(userData.userRight, Constant.USER_RIGHT_ENUM)){
+                update.userRight = userData.userRight;
             }
 
             update.profile = {};
 
-            if( Pieces.VariableBaseTypeChecking(bookData.language, 'string')
-                && Validator.isLength(bookData.language, {min: 2, max: 2}) ){
-                update.profile.language = bookData.language;
+            if( Pieces.VariableBaseTypeChecking(userData.language, 'string')
+                && Validator.isLength(userData.language, {min: 2, max: 2}) ){
+                update.profile.language = userData.language;
             }
 
             let options = {

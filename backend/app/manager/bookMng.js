@@ -84,10 +84,13 @@ exports.delete = function (accessUserId, accessUserRight, bookId, callback) {
 
         let query = {_id: bookId, userRight: {$in: lowerUserRightList}};
         let update = {status: Constant.STATUS_ENUM[2]};
-        console.log(update);
         let options = {upsert: false, new: false, setDefaultsOnInsert: true};
 
-        User.findOneAndUpdate(query, update, options, function (error, book) {
+         //let book = update;
+
+        Book.findOneAndUpdate(query, update, options, function (error, book) {
+            book.status = update.status;
+            console.log(book.status);
             if (error) {
                 return callback(8, 'find_update_fail', 420, error);
             } else {
@@ -111,7 +114,7 @@ exports.delete = function (accessUserId, accessUserRight, bookId, callback) {
 };
 
 
-exports.getOne = function (accessUserId, Id, callback) { //, accessUserType
+exports.getOne = function (accessUserId, Id, callback) {
     try {
         if ( !( Pieces.VariableBaseTypeChecking(Id,'string'))
             && !Pieces.VariableBaseTypeChecking(Id,'number') ){
@@ -338,8 +341,8 @@ exports.update = function (accessUserId, accessUserType, bookId, bookData, callb
         update.updatedBy=accessUserId;
         update.updatedAt= new Date();
 
-        if (Pieces.VariableEnumChecking(bookData.status, Constant.BOOK_STATUS)) {
-            update.status = bookData.status;
+        if (Pieces.VariableEnumChecking(update.status, Constant.BOOK_STATUS)) {
+            update.status = update.status;
         }else{
             update.status = Constant.BOOK_STATUS[1];
         }
@@ -370,23 +373,6 @@ exports.update = function (accessUserId, accessUserType, bookId, bookData, callb
         else{
             update.yearPublication = -1;
         }
-
-
-
-        // if ( Pieces.VariableBaseTypeChecking(bookData.password, 'string')
-        //     && Validator.isLength(bookData.password, {min: 4, max: 64}) ) {
-        //     update.password = BCrypt.hashSync(bookData.password, 10);
-        // }
-        //
-        // if ( Pieces.VariableBaseTypeChecking(bookData.fullName, 'string')
-        //     && Validator.isLength(bookData.fullName, {min: 4, max: 64}) ) {
-        //     update.fullName = bookData.fullName;
-        // }
-        //
-        // if (Pieces.VariableBaseTypeChecking(bookData.email, 'string')
-        //     && Validator.isEmail(bookData.email)) {
-        //     update.email = bookData.email;
-        // }
 
         if(Pieces.VariableEnumChecking(bookData.status, Constant.STATUS_ENUM)){
             update.status = bookData.status;
