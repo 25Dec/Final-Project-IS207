@@ -11,7 +11,7 @@ const PagedFind = require('./plugins/pagedFind'); // cái này là cái gì v t�
 let Schema = Mongoose.Schema;
 
 let BookSchema = new Schema({
-    code:{
+    code: {
         type: String,
         minlength: 4,
         maxlength: 64,
@@ -23,7 +23,7 @@ let BookSchema = new Schema({
         type: String,
         minlength: 4,
         maxlength: 64,
-        //required: true
+        required: true
     },
     language:{
         type: String,
@@ -71,6 +71,10 @@ let BookSchema = new Schema({
         type: String,
         require: true,
         default: Constant.DELETED[1]
+    },
+    category: {
+        type: String,
+        require: true
     }
 });
 

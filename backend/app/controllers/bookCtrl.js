@@ -18,7 +18,7 @@ module.exports = {
         const accessUserType = req.body.accessUserRight || '';
         const accessLoginName = req.body.accessLoginName || '';
 
-        let data = req.body || "None of data SugarTawng";
+        const data = req.body || "None of data SugarTawng";
 
         BookManager.create(accessUserId, accessUserType, accessLoginName, data, function (errorCode, errorMessage, httpCode, errorDescription, book) {
             if (errorCode) {

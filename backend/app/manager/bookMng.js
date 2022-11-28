@@ -16,7 +16,10 @@ const BCrypt = require("bcryptjs");
 
 exports.create = function (accessUserId, accessUserRight, accessUserName, data, callback) {
     try {
-        if ( !Pieces.VariableBaseTypeChecking(data.code,'string') ) {
+
+        console.log("book code",data.code);
+
+        if ( !Validator.isAlphanumeric(data.code)) {
             return callback(2, 'invalid_book_code', 400, 'code is not a string', null);
         }
 
@@ -25,7 +28,9 @@ exports.create = function (accessUserId, accessUserRight, accessUserName, data, 
             return callback(2, 'invalid_book_name', 400, 'name is not alphanumeric and 4 - 128 characters', null);
         }
 
-        if (!Validator.isAlphanumeric(data.authorName)
+
+
+        if (!Pieces.VariableBaseTypeChecking(data.authorName, 'string')
             || !Validator.isLength(data.authorName, {min: 4, max: 128}) ) {
             return callback(2, 'invalid_author_name', 400, 'name is not alphanumeric and 4 - 128 characters', null);
         }
@@ -35,14 +40,15 @@ exports.create = function (accessUserId, accessUserRight, accessUserName, data, 
         }
 
         if ( Pieces.VariableBaseTypeChecking(data.yearPublication,'int') ) {
-            return callback(2, 'invalid_book_yearPublication', 400, 'code is not a int', null);
+            return callback(2, 'invalid_book_yearPublication', 400, 'year publication is not a int', null);
         }
 
         if ( Pieces.VariableBaseTypeChecking(data.quantity,'int') ) {
-            return callback(2, 'invalid_book_quantity', 400, 'code is not a int', null);
+            return callback(2, 'invalid_book_quantity', 400, 'quantity of book is not a int', null);
         }
 
         let queryObj = {};
+
         queryObj.code = data.code;
         queryObj.creator = accessUserId;
         queryObj.updater = accessUserId;
@@ -52,6 +58,19 @@ exports.create = function (accessUserId, accessUserRight, accessUserName, data, 
         queryObj.authorName = data.authorName;
         queryObj.yearPublication = data.yearPublication;
         queryObj.quantity = data.quantity;
+
+
+
+        if(data.category!=undefined){
+            queryObj.category = data.category;
+        }
+        else {
+            queryObj.category = Constant.CATEGORY[10];
+        }
+
+        if( !Pieces.VariableEnumChecking(queryObj.category, Constant.CATEGORY)){
+            return callback(2, 'invalid_book_category', 400, 'category doesnt match in constant' );
+        }
 
             Book.create(queryObj).then(book=>{
             "use strict";
@@ -85,8 +104,6 @@ exports.delete = function (accessUserId, accessUserRight, bookId, callback) {
         let query = {_id: bookId, userRight: {$in: lowerUserRightList}};
         let update = {status: Constant.STATUS_ENUM[2]};
         let options = {upsert: false, new: false, setDefaultsOnInsert: true};
-
-         //let book = update;
 
         Book.findOneAndUpdate(query, update, options, function (error, book) {
             book.status = update.status;
