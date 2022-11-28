@@ -13,5 +13,6 @@ module.exports = {
     USER_RIGHT_MANAGER_ENUM: ['ADMIN','SUPER_ADMIN'],
     BOOK_STATUS: ['OLD', 'NEW'],
     DEFAULT_PAGING_SIZE: 100,
-    DELETED
+    DELETED:['YES', 'NO'],
+    CATEGORY: ['Romance', 'Mystery', 'Fantasy & Science fiction', 'Thrillers & Horror', 'Self-help', 'Short Stories', 'Cookbooks', 'Essays', "Essays", 'History', 'Unknown', 'Other']
 };
