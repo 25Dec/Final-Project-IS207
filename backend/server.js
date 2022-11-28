@@ -6,11 +6,13 @@ const Console = require("console");
 const morgan = require('morgan');
 const mongoose = require("mongoose");
 const Config = require('./app/configs/gConfig');
-
+const cors = require('cors');
 let App = Express();
 
 // get all data/stuff of the body (POST) parameters
 // parse application/json
+
+App.use(cors());
 
 App.use(BodyParser.json({
     limit: '5mb'
