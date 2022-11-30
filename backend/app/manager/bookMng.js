@@ -138,24 +138,24 @@ exports.getOne = function (accessUserId, Id, callback) {
             return callback(2, 'invalid_book_id', 400, 'book id is incorrect', null);
         }
 
-        let where = {};
+        let query = {};
 
-        where.id = Id;
-        console.log(where);
+        query._id = Id;
+        console.log(query._id);
+        let options = {'password': 0, 'resetPasswordToken': 0, 'updater': 0};
 
-        Book.findOne({where:where}).then(book=>{
-            "use strict";
-            if(book){
-                return callback(null, null, 200, null, book);
-            }else{
-                return callback(2, 'find_one_book_fail', 404, null, null);
+        Book.findOne(query, options, function (error, book) {
+            if (error) {
+                return callback(8, 'find_fail', 420, error, null);
             }
-        }).catch(function(error){
-            "use strict";
-            console.log(error);
 
-            return callback(2, 'find_one_book_fail', 400, error, null);
+            if(!book){
+                return callback(8, 'unavailable', 404, null, null);
+            }else{
+                return callback(null, null, 200, null, book);
+            }
         });
+
     }catch(error){
         return callback(2, 'get_one_book_fail', 400, error, null);
     }

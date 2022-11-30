@@ -46,7 +46,6 @@ module.exports = {
     },
     getOne: function (req, res) {
         let accessUserId = req.query.accessUserId || '';
-        let accessUserType = req.query.accessUserRight || '';
 
         let id = req.params.id || '';
 
@@ -55,6 +54,7 @@ module.exports = {
                 if (errorCode) {
                     return Rest.sendError(res, errorCode, errorMessage, httpCode, errorDescription);
                 } else {
+                    console.log(book);
                     return Rest.sendSuccess(res, book, httpCode);
                 }
             });

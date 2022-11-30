@@ -81,7 +81,8 @@ const sendSuccessToken = function (res, token, user) {
     out.displayName = user.displayName;
     out.email = user.email;
     out.userRight = user.userRight;
-
+    out.firstName = user.firstName;
+    out.lastName = user.lastName;
     res.status(200);
     res.contentType('json');
     return res.json(out);
