@@ -39,6 +39,8 @@ module.exports = {
             }
             query._id = userId;
 
+            console.log(options);
+
             User.findOne(query, options, function (error, user) {
                 if (error) {
                     return callback(8, 'find_fail', 420, error, null);
