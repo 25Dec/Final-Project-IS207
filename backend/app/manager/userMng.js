@@ -57,7 +57,30 @@ module.exports = {
         }
     },
 
-    getAll: function(accessUserId, accessUserRight, queryContent, callback){
+    getInventory: function (accessUserRight, callback) {
+        if ( (Constant.USER_RIGHT_MANAGER_ENUM.indexOf(accessUserRight) < 1) ) {
+            return callback(8, 'invalid_right', 400, null, null);
+        }
+        try {
+            User.find().count(function (error, count) {
+                if (error) {
+                    return callback(8, 'find_fail', 420, error, null);
+                }
+                if (!count) {
+                    return callback(8, 'unavailable', 404, null, null);
+                } else {
+                    return callback(null, null, 200, null, count);
+                }
+            });
+
+
+        } catch (error) {
+            return callback(8, 'hihi', 400, error, null);
+        }
+    },
+
+
+        getAll: function(accessUserId, accessUserRight, queryContent, callback){
         try {
             if ( (Constant.USER_RIGHT_MANAGER_ENUM.indexOf(accessUserRight) < 0) ) {
                 return callback(8, 'invalid_right', 400, null, null);
@@ -95,6 +118,7 @@ module.exports = {
         }
     },
 
+
     update: function (accessUserId, accessUserRight, accessLoginName, userId, userData, callback) {
         try {
             console.log(userId);
@@ -108,7 +132,7 @@ module.exports = {
                 return callback(8, 'invalid_right', 403, null, null);
             }
 
-            let query = {};
+            let query = {_id: userId};
             let userRightIdx = Constant.USER_RIGHT_ENUM.indexOf(accessUserRight);
             let lowerUserRightList=[];
             if( userRightIdx > 0 ){
@@ -135,6 +159,17 @@ module.exports = {
                 && Validator.isLength(userData.displayName, {min: 4, max: 64}) ) {
                 update.displayName = userData.displayName;
             }
+
+            if ( Pieces.VariableBaseTypeChecking(userData.firstName, 'string')
+                && Validator.isLength(userData.firstName, {min: 4, max: 64}) ) {
+                update.firstName = userData.firstName;
+            }
+
+            if ( Pieces.VariableBaseTypeChecking(userData.lastName, 'string')
+                && Validator.isLength(userData.lastName, {min: 4, max: 64}) ) {
+                update.lastName = userData.lastName;
+            }
+
 
 
             if ( Pieces.VariableBaseTypeChecking(userData.password, 'string')
@@ -290,6 +325,8 @@ module.exports = {
             return callback(8, 'check_valid_available_fail', 400, error, null);
         }
     },
+
+
 
     createByAdmin: function(accessUserId, accessUserRight, accessLoginName, userData, callback){
         try {

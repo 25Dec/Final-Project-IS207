@@ -23,6 +23,7 @@ const sendSuccess = function (res, data, iHttpCode) {
 };
 
 
+
 const sendSuccessDownload = function (res, absPath, isUrl) {
     if (!res) {
         return;
@@ -92,7 +93,6 @@ const sendError = function (res, code, message, httpCode, description, errors) {
     if (!res) {
         return;
     }
-
     let out = {};
     out.code = code;
     out.message = message ? message.toString() : "unidentified error";
@@ -118,5 +118,4 @@ module.exports = {
     sendSuccessToken,
     sendSuccessDownload,
     sendSuccessWebContent,
-
 };

@@ -75,6 +75,11 @@ let BookSchema = new Schema({
     category: {
         type: String,
         require: true
+    },
+    rating: {
+        type: Number,
+        require: true,
+        default: 0
     }
 });
 

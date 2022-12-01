@@ -8,17 +8,28 @@ module.exports = function (app) {
     /**
      * @api {POST} /v1/auth/users Create One
      * @apiVersion 1.0.0
-     * @apiName createByAdmin
+     * @apiName Create by super admin
      * @apiGroup User
-     * @apiPermission just administrator or moderator
+     * @apiPermission Super admin
      * @apiHeader {String} access_token json web token to access to data
      *
-     * @apiDescription Create user by admin or moderator
+     * @apiDescription Create user by admin or super admin note cannot create with greater right
      *
-     * @apiParam {string} loginName a unique string with 6 <= length <= 64
+     * @apiParam {string} loginName a unique string with 4 <= length <= 64
+     * @apiParam {string} displayName a string with 4 <= length <= 64 (Default displayName = loginName)
      * @apiParam {string} email unique email
-     * @apiParam {String} password a string with 6 <= length <= 64
-     *
+     * @apiParam {string} password a string with 4 <= length <= 64
+     * @apiParam {string} language the language of user use (Default en)
+     * @apiParam {string} firstName the firstname of a user, string with 3 <= length <= 256
+     * @apiParam {string} lastName the lastname of a user, string with 3 <= length <= 256
+     * @apiParam {string} userRight the Right of a user (Default END_USER)
+     * @apiParam {string} system define user belong to user system or not (default: false)
+     * @apiParam {string} status describe status of user (ACTIVATED', 'DEACTIVATED', 'DELETED', default ACTIVATED)
+     * @apiParam {boolean}  isAlive a boolean variable (default: false)
+     * @apiParam {object}  createdBy the user create a new user (default by id)
+     * @apiParam {object}  updatedBy the user update a old user (default by id)
+     * @apiParam {date}  createdAt time when you create new user (default by when you query)
+     * @apiParam {date}  updatedAt time when you update new user (default by when you query)
      * @apiExample Example usage:
      * curl -i https://localhost:3001/v1/auth/users
      *
@@ -36,24 +47,26 @@ module.exports = function (app) {
      * @apiError invalid input data
      *
      * @apiErrorExample Error-Response:
-     *     HTTP/1.1 400 Bad Request
+     * HTTP/1.1 400 Bad Request
      *     {
      *       "result": "fail",
-     *       "message": "",
+     *       "code": "x",
+     *       "message": "invalid input",
+     *       "description": "describe error"
      *     }
      */
     app.post('/v1/auth/users', oUserCtrl.createByAdmin);
     /**
      * @api {POST} /v1/login Login
      * @apiVersion 1.0.0
-     * @apiName login
+     * @apiName Login
      * @apiGroup User
-     * @apiPermission Every one
+     * @apiPermission Every one not include guess
      *
-     * @apiDescription login and get access token
+     * @apiDescription Login and get access token to take more action
      *
-     * @apiParam {string} id a int with length <= 10
-     * @apiParam {String} code a string with 4 < length < 64
+     * @apiParam {string} loginName a unique string with 4 < length < 64
+     * @apiParam {String} password a string with 4 < length < 64
      *
      * @apiExample Example usage:
      * curl -i https://localhost:3001/v1/login
@@ -70,7 +83,10 @@ module.exports = function (app) {
      *          "id":2,
      *          "loginName": "bioz",
      *          "displayName": "bioz",
-     *          "email": ilovebioz@gmail.com
+     *          "email": ilovebioz@gmail.com,
+     *          "userRight": "SUPER_ADMIN",
+     *          "firstName": "System"
+     *          "lastName": "Admin"
      *       },
      *       "result": "ok",
      *       "message":""
@@ -79,10 +95,12 @@ module.exports = function (app) {
      * @apiError invalid input data
      *
      * @apiErrorExample Error-Response:
-     *     HTTP/1.1 200 OK
+     * HTTP/1.1 400 Bad Request
      *     {
      *       "result": "fail",
-     *       "message": "invalid input"
+     *       "code": "x",
+     *       "message": "invalid input",
+     *       "description": "describe error"
      *     }
      */
     app.post('/v1/login', oUserCtrl.login);
@@ -90,12 +108,12 @@ module.exports = function (app) {
     /**
      * @api {GET} /v1/auth/users/:id Get One
      * @apiVersion 1.0.0
-     * @apiName getOne
+     * @apiName GetOne
      * @apiGroup User
      * @apiPermission Every type of user
      * @apiHeader {String} access_token json web token to access to data
      *
-     * @apiDescription Get one user
+     * @apiDescription Get one a user less right and by itself: Example: enduser can get it self, admin can get anonymous and enduser, super admin can get all
      *
      * @apiParam {string} id ID of user, on params
      *
@@ -103,11 +121,21 @@ module.exports = function (app) {
      * curl -i https://localhost:3001/v1/auth/users/2
      *
      * @apiSuccess {String} id the ID of group
-     * @apiSuccess {String} loginName login name of user
-     * @apiSuccess {String} displayName display name of user
-     * @apiSuccess {String} email email of user
-     * @apiSuccess {String} firstName first name of user
-     * @apiSuccess {String} lastName last name of user
+     * @apiSuccess {string} loginName a unique string with 4 <= length <= 64
+     * @apiSuccess {string} displayName a string with 4 <= length <= 64 (Default displayName = loginName)
+     * @apiSuccess {string} email unique email
+     * @apiSuccess {string} password a string with 4 <= length <= 64
+     * @apiSuccess {string} language the language of user use (Default en)
+     * @apiSuccess {string} firstName the firstname of a user, string with 3 <= length <= 256
+     * @apiSuccess {string} lastName the lastname of a user, string with 3 <= length <= 256
+     * @apiSuccess {string} userRight the Right of a user (Default END_USER)
+     * @apiSuccess {string} system define user belong to user system or not (default: false)
+     * @apiSuccess {string} status describe status of user (ACTIVATED', 'DEACTIVATED', 'DELETED', default ACTIVATED)
+     * @apiSuccess {boolean}  isAlive a boolean variable (default: false)
+     * @apiSuccess {object}  createdBy the user create a new user (default by id)
+     * @apiSuccess {object}  updatedBy the user update a old user (default by id)
+     * @apiSuccess {date}  createdAt time when you create new user (default by when you query)
+     * @apiSuccess {date}  updatedAt time when you update new user (default by when you query)
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
@@ -126,28 +154,27 @@ module.exports = function (app) {
      * @apiError invalid input data
      *
      * @apiErrorExample Error-Response:
-     *     HTTP/1.1 400 Bad Request
+     * HTTP/1.1 400 Bad Request
      *     {
      *       "result": "fail",
-     *       "message": "invalid input"
+     *       "code": "x",
+     *       "message": "invalid input",
+     *       "description": "describe error"
      *     }
      */
     app.get('/v1/auth/users/:id', oUserCtrl.getOne);
     /**
      * @api {GET} /v1/auth/users Get List
      * @apiVersion 1.0.0
-     * @apiName getAll
+     * @apiName GetAll
      * @apiGroup User
-     * @apiPermission administrator
+     * @apiPermission Super admin and admin
      * @apiHeader {String} access_token json web token to access to data
      *
-     * @apiDescription Get all users
+     * @apiDescription Get all users in database, admin can see the information, endUser and anonymous, superAdmin can see all role
      *
-     * @apiParam {Number} page Page which we want to get (N/A)
-     * @apiParam {Number} perPage Item per page (N/A)
-     * @apiParam {String} sort Sort the list by a field (N/A)
-     * @apiParam {String} filter filter the query data (N/A)
-     * @apiParam {String} q Text filter for data (N/A)
+     * @apiParam {none} noneOfInput nothing input here
+     *
      *
      * @apiExample Example usage:
      * curl -i https://localhost:3001/v1/auth/users
@@ -161,8 +188,8 @@ module.exports = function (app) {
      *     HTTP/1.1 200 OK
      *     {
      *       "data": [...],
-     *       "items": {"begin": 1, "end": 3, "total": 5},
      *       "pages": {"current": 1, "prev": 3, "hasPrev": true, "next": 5, "hasNext": true, "total": 56},
+     *       "items": {"begin": 1, "end": 3, "total": 5},
      *       "result": "ok",
      *       "message": ""
      *     }
@@ -170,28 +197,32 @@ module.exports = function (app) {
      * @apiError invalid input data
      *
      * @apiErrorExample Error-Response:
-     *     HTTP/1.1 400 Bad Request
+     * HTTP/1.1 400 Bad Request
      *     {
      *       "result": "fail",
-     *       "message": "invalid input"
+     *       "code": "x",
+     *       "message": "invalid input",
+     *       "description": "describe error"
      *     }
      */
     app.get('/v1/auth/users', oUserCtrl.getAll);
     /**
      * @api {PUT} /v1/auth/users/:id Update One
      * @apiVersion 1.0.0
-     * @apiName update
+     * @apiName Update
      * @apiGroup User
-     * @apiPermission Every type of user
+     * @apiPermission Admin and super admin
      * @apiHeader {String} access_token json web token to access to data
      *
-     * @apiDescription Update user information
+     * @apiDescription Update user information, endUser can update information for it self, admin can endUser, anonymous and itself but can not update admin and super admin, superadmin canupdate every role
      *
      * @apiParam {String} id ID of user, on params
-     * @apiParam {String} loginName login name of user
-     * @apiParam {String} email email of user
-     * @apiParam {String} firstName first name of user
-     * @apiParam {String} lastName last name of user
+     * @apiParam {string} displayName a string with 4 <= length <= 64 (Default displayName = loginName) (OPTIONAL)
+     * @apiParam {string} userRight the Right of a user (Default END_USER) (OPTIONAL)
+     * @apiParam {string} loginName a unique string with 4 <= length <= 64 (OPTIONAL)
+     * @apiParam {string} firstName the firstname of a user, string with 3 <= length <= 256 (OPTIONAL)
+     * @apiParam {string} lastName the lastname of a user, string with 3 <= length <= 256 (OPTIONAL)
+     * @apiParam {string} email unique email (OPTIONAL)
      *
      * @apiExample Example usage:
      * curl -i  https://localhost:3001/v1/auth/users/2
@@ -212,20 +243,22 @@ module.exports = function (app) {
      * @apiErrorExample Error-Response:
      *     HTTP/1.1 400 Bad Request
      *     {
-     *       "result":"fail",
-     *       "message": "invalid input"
+     *       "result": "fail",
+     *       "code": "x",
+     *       "message": "invalid input",
+     *       "description": "describe error"
      *     }
      */
     app.put('/v1/auth/users/:id', oUserCtrl.update);
     /**
      * @api {DELETE} /v1/auth/users/:id Delete One
      * @apiVersion 1.0.0
-     * @apiName delete
+     * @apiName Delete
      * @apiGroup User
-     * @apiPermission just admin user
+     * @apiPermission Admin and super admin
      * @apiHeader {String} access_token json web token to access to data
      *
-     * @apiDescription delete user
+     * @apiDescription Admin can delete enduser and anonymous, super admin can delete every role
      *
      * @apiParam {String} id ID of user
      *
@@ -246,11 +279,50 @@ module.exports = function (app) {
      * @apiError invalid input data
      *
      * @apiErrorExample Error-Response:
-     *     HTTP/1.1 400 Bad Request
+     *    HTTP/1.1 400 Bad Request
      *     {
-     *       "result":"fail",
-     *       "message": "invalid input"
+     *       "result": "fail",
+     *       "code": "x",
+     *       "message": "invalid input",
+     *       "description": "describe error"
      *     }
      */
     app.delete('/v1/auth/users/:id', oUserCtrl.delete);
+
+    /**
+     * @api {GET} /v1/auth/statistics/user/overall Get number of user in the system
+     * @apiVersion 1.0.0
+     * @apiName Get Count User Data
+     * @apiGroup User
+     * @apiPermission super admin
+     * @apiHeader {String} access_token json web token to access to data
+     *
+     * @apiDescription Get number of user in the system with the super admin role
+     *
+     * @apiParam {none} noneOfInput nothing input here
+     *
+     * @apiExample Example usage:
+     * curl -i https://conntomysql.herokuapp.com/v1/auth/books
+     *
+     * @apiSuccess {Number} the result of number user
+     * @apiSuccess {String} result ok or fail
+     * @apiSuccess {String} message something from server
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "data": {x},
+     *       "message": ""
+     *     }
+     *
+     * @apiError invalid input data
+     *
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 400 Bad Request
+     *     {
+     *       "result": "fail",
+     *       "message": "invalid input"
+     *     }
+     */
+    app.get('/v1/auth/statistics/user/overall', oUserCtrl.getCountData);
+
 }

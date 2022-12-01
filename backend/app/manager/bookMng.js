@@ -1,5 +1,5 @@
 /**
- * Created by bioz on 1/13/2017.
+ * Created by SugarTawng on 1/12/2022
  */
 // third party components
 const Validator = require('validator');
@@ -39,11 +39,11 @@ exports.create = function (accessUserId, accessUserRight, accessUserName, data, 
             return callback(8, 'invalid_right', 403, 'you must be admin to do this process', null);
         }
 
-        if ( Pieces.VariableBaseTypeChecking(data.yearPublication,'int') ) {
+        if ( Pieces.VariableBaseTypeChecking(data.yearPublication,'int') || data.yearPublication<-1) {
             return callback(2, 'invalid_book_yearPublication', 400, 'year publication is not a int', null);
         }
 
-        if ( Pieces.VariableBaseTypeChecking(data.quantity,'int') ) {
+        if ( Pieces.VariableBaseTypeChecking(data.quantity,'int') || data.quantity< 0) {
             return callback(2, 'invalid_book_quantity', 400, 'quantity of book is not a int', null);
         }
 
@@ -58,7 +58,6 @@ exports.create = function (accessUserId, accessUserRight, accessUserName, data, 
         queryObj.authorName = data.authorName;
         queryObj.yearPublication = data.yearPublication;
         queryObj.quantity = data.quantity;
-
 
 
         if(data.category!=undefined){
@@ -130,7 +129,6 @@ exports.delete = function (accessUserId, accessUserRight, bookId, callback) {
     }
 };
 
-
 exports.getOne = function (accessUserId, Id, callback) {
     try {
         if ( !( Pieces.VariableBaseTypeChecking(Id,'string'))
@@ -161,11 +159,47 @@ exports.getOne = function (accessUserId, Id, callback) {
     }
 };
 
+exports.getTopQuantity = function (callback) {
+    try {
+        Book.find({}).sort({quantity: "desc"}).exec(function (error, count) {
+            if (error) {
+                return callback(8, 'find_fail', 420, error, null);
+            }
+            if (!count) {
+                return callback(8, 'unavailable', 404, null, null);
+            } else {
+                return callback(null, null, 200, null, count);
+            }
+        });
+
+    }catch (error){
+        return callback(8, 'hihi', 400, error, null);
+    }
+};
+
+exports.getTopRating = function ( callback) {
+    try {
+        Book.find({}).sort({rating: "desc"}).limit(5).exec(function (error, count) {
+            if (error) {
+                return callback(8, 'find_fail', 420, error, null);
+            }
+            if (!count) {
+                return callback(8, 'unavailable', 404, null, null);
+            } else {
+                return callback(null, null, 200, null, count);
+            }
+        });
+
+    }catch (error){
+        return callback(8, 'hihi', 400, error, null);
+    }
+};
+
 exports.getAll = function (accessUserId, accessUserType, accessUserName, queryContent, callback) {
     try {
-        if ( (Constant.USER_RIGHT_MANAGER_ENUM.indexOf(accessUserType) < 0) ) {
-            return callback(8, 'invalid_right', 400, null, null);
-        }
+        // if ( (Constant.USER_RIGHT_MANAGER_ENUM.indexOf(accessUserType) < 0) ) {
+        //     return callback(8, 'invalid_right', 400, null, null);
+        // }
 
         let condition = {};
         let userRightIdx = Constant.USER_RIGHT_ENUM.indexOf(accessUserType);
@@ -198,6 +232,27 @@ exports.getAll = function (accessUserId, accessUserType, accessUserName, queryCo
         return callback(8, 'gets_fail', 400, error, null);
     }
 };
+
+exports.getInventory = function (accessUserRight, callback){
+    if ( (Constant.USER_RIGHT_MANAGER_ENUM.indexOf(accessUserRight) < 1) ) {
+        return callback(8, 'invalid_right', 400, null, null);
+    }
+    try {
+        Book.find({}).count(function (error, count) {
+            if (error) {
+                return callback(8, 'find_fail', 420, error, null);
+            }
+            if (!count) {
+                return callback(8, 'unavailable', 404, null, null);
+            } else {
+                return callback(null, null, 200, null, count);
+            }
+        });
+
+    }catch (error){
+        return callback(8, 'hihi', 400, error, null);
+    }
+}
 
 exports.parseFilter = function (accessUserId, accessUserRight, condition, filters) {
     try {
@@ -335,6 +390,7 @@ exports.parseFilter = function (accessUserId, accessUserRight, condition, filter
 
 exports.update = function (accessUserId, accessUserType, bookId, bookData, callback) {
     try {
+
         let options = {
             upsert: false,
             new: true,
@@ -346,23 +402,28 @@ exports.update = function (accessUserId, accessUserType, bookId, bookData, callb
             return callback(8, 'invalid_right', 403, null, null);
         }
 
-        let query = {};
         let userRightIdx = Constant.USER_RIGHT_MANAGER_ENUM.indexOf(accessUserType);
         let lowerUserRightList=[];
         if( userRightIdx >= 0 ){
             lowerUserRightList = Constant.USER_RIGHT_ENUM.slice(0, userRightIdx);
         }
-
+        let query = {_id: bookId, userRight: {$in: lowerUserRightList}};
         let update = {};
 
         update.updatedBy=accessUserId;
         update.updatedAt= new Date();
 
-        if (Pieces.VariableEnumChecking(update.status, Constant.BOOK_STATUS)) {
-            update.status = update.status;
-        }else{
-            update.status = Constant.BOOK_STATUS[1];
+        if(bookData.category!=undefined){
+            update.category = bookData.category;
         }
+        else {
+            update.category = Constant.CATEGORY[10];
+        }
+
+        if( !Pieces.VariableEnumChecking(bookData.category, Constant.CATEGORY)){
+            return callback(2, 'invalid_book_category', 400, 'category doesnt match in constant' );
+        }
+
 
         if ( Pieces.VariableBaseTypeChecking(bookData.code, 'string')
             && Validator.isAlphanumeric(bookData.code)
@@ -383,22 +444,27 @@ exports.update = function (accessUserId, accessUserType, bookId, bookData, callb
             update.authorName = bookData.authorName;
         }
 
-        if ( (Validator.isNumeric(bookData.yearPublication) && bookData.yearPublication>0)
-            && Validator.isLength(bookData.yearPublication, {min: 1, max: 5})) {
-            update.yearPublication = bookData.yearPublication;
-        }
-        else{
-            update.yearPublication = -1;
+        if ( Pieces.VariableBaseTypeChecking(bookData.quantity,'int') || bookData.quantity< 0) {
+            return callback(2, 'invalid_book_quantity', 400, 'quantity of book is not a int', null);
+        }else {
+            update.quantity = bookData.quantity;
         }
 
-        if(Pieces.VariableEnumChecking(bookData.status, Constant.STATUS_ENUM)){
+        if ( Pieces.VariableBaseTypeChecking(bookData.yearPublication,'int') || bookData.yearPublication< 0) {
+            return callback(2, 'invalid_book_yearPublication', 400, 'yearPublication of book is not a int', null);
+        }
+            update.yearPublication = bookData.yearPublication;
+
+        if ( Pieces.VariableBaseTypeChecking(bookData.rating,'int') || bookData.rating< 0) {
+            return callback(2, 'invalid_book_yearPublication', 400, 'yearPublication of book is not a int', null);
+        }
+            update.rating = bookData.rating;
+
+        console.log('rating' ,update.rating);
+
+        if(Pieces.VariableEnumChecking(bookData.status, Constant.BOOK_STATUS)){
             update.status = bookData.status;
         }
-
-        if(Pieces.VariableEnumChecking(bookData.userRight, Constant.USER_RIGHT_ENUM)){
-            update.userRight = bookData.userRight;
-        }
-
 
         Book.findOneAndUpdate(query, update, options, function (error, book) {
             if (error) {
@@ -412,6 +478,6 @@ exports.update = function (accessUserId, accessUserType, bookId, bookData, callb
         });
 
     }catch(error){
-        return callback(2, 'update_device_fail', 400, error);
+        return callback(2, 'update_book_fail', 400, error);
     }
 };

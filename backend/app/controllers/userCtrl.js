@@ -11,7 +11,6 @@ const Rest = require('../utils/restware');
 const {updatePassword} = require("../manager/userMng");
 
 module.exports = {
-
     createByAdmin: function (req, res) {
         let accessUserId = req.body.accessUserId || '';
         let accessUserRight = req.body.accessUserRight || '';
@@ -115,6 +114,16 @@ module.exports = {
                 }
             });
         });
-    }
+    },
 
+    getCountData: function (req, res){
+         let accessUserRight = req.query.accessUserRight || '';
+
+        UserManager.getInventory(accessUserRight, function (errorCode, errorMessage, httpCode, errorDescription, results) {
+            if (errorCode) {
+                return Rest.sendError(res, errorCode, errorMessage, httpCode, errorDescription);
+            }
+            return Rest.sendSuccess(res, results, httpCode);
+        });
+    }
 }

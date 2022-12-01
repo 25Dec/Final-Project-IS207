@@ -59,6 +59,25 @@ module.exports = {
                 }
             });
     },
+
+    getTopQuantity: function (req, res) {
+        BookManager.getTopQuantity( function (errorCode, errorMessage, httpCode, errorDescription, results) { //accessUserId, accessUserRight
+            if (errorCode) {
+                return Rest.sendError(res, errorCode, errorMessage, httpCode, errorDescription);
+            }
+            return Rest.sendSuccess(res, results, httpCode);
+        });
+    },
+
+    getTopRating: function (req, res) {
+        BookManager.getTopRating( function (errorCode, errorMessage, httpCode, errorDescription, results) { //accessUserId, accessUserRight
+            if (errorCode) {
+                return Rest.sendError(res, errorCode, errorMessage, httpCode, errorDescription);
+            }
+            return Rest.sendSuccess(res, results, httpCode);
+        });
+    },
+
     getAll: function (req, res) {
         let accessUserId = req.query.accessUserId || '';
         let accessUserType = req.query.accessUserRight || '';
@@ -72,6 +91,16 @@ module.exports = {
             } else {
                 return Rest.sendSuccess(res, results, httpCode);
             }
+        });
+    },
+
+    getCountData: function (req, res){
+        let accessUserRight = req.query.accessUserRight || '';
+        BookManager.getInventory( accessUserRight, function (errorCode, errorMessage, httpCode, errorDescription, results) {
+            if (errorCode) {
+                return Rest.sendError(res, errorCode, errorMessage, httpCode, errorDescription);
+            }
+            return Rest.sendSuccess(res, results, httpCode);
         });
     },
 
@@ -91,6 +120,7 @@ module.exports = {
             });
         }else {
             let updateData = req.body || '';
+            console.log(updateData);
             BookManager.update(accessUserId, accessUserType, id, updateData, function (errorCode, errorMessage, httpCode, errorDescription) {
                 if (errorCode) {
                     return Rest.sendError(res, errorCode, errorMessage, httpCode, errorDescription);
