@@ -1,0 +1,77 @@
+#ListOfBooks {
+	width: 100vw;
+	height: 100vh;
+	background: #f9fbff;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+#ListOfBooks > h1 {
+	margin: 1.5rem 0;
+	color: #bf8f60;
+	text-transform: uppercase;
+}
+
+#ListOfBooks > table {
+	width: 80%;
+	border-collapse: collapse;
+	box-shadow: 0 5px 10px #e1e5ee;
+	background-color: white;
+	text-align: center;
+	overflow: hidden;
+}
+
+#ListOfBooks > table thead {
+	box-shadow: 0 5px 10px #e1e5ee;
+}
+
+#ListOfBooks > table th {
+	padding: 1rem 2rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1rem;
+	font-size: 0.7rem;
+	font-weight: 900;
+}
+
+#ListOfBooks > table td {
+	padding: 1rem 2rem;
+}
+
+#ListOfBooks > table .bookName {
+	color: #bf8f60;
+}
+
+#ListOfBooks > table .edit,
+#ListOfBooks > table .delete {
+	color: black;
+}
+
+#ListOfBooks > table a:hover {
+	text-decoration: underline;
+}
+
+#ListOfBooks > table .status {
+	border-radius: 0.2rems;
+	background-color: red;
+	padding: 0.2rem 1rem;
+}
+
+#ListOfBooks > table .status.new {
+	background-color: #c8e6c9;
+	color: #388e3c;
+}
+
+#ListOfBooks > table .status.old {
+	background-color: #fff0c2;
+	color: #a68b00;
+}
+
+#ListOfBooks > table .modify svg {
+	cursor: pointer;
+}
+
+#ListOfBooks table tr:nth-child(even) {
+	background-color: #f4f6fb;
+}

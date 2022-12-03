@@ -3,6 +3,7 @@
 	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
+	font-family: "Poppins", sans-serif;
 }
 :root {
 	/* colors */
@@ -21,24 +22,60 @@
 	/* transition */
 	--transition: all 0.5s linear;
 }
+
 html {
 	scroll-behavior: smooth;
 }
+
 body {
 	width: 100vw;
 	height: 100vh;
-	font-family: "Poppins", sans-serif;
 }
+
 a {
 	text-decoration: none;
 }
-button {
-	width: 100%;
-	padding: 1rem;
-	border-radius: 0.5rem;
-	font-size: 1rem;
-	border: none;
-	outline: none;
-	transition: var(--transition);
-	cursor: pointer;
+
+.top-to-bottom {
+	opacity: 0;
+	transform: translateY(-150%);
+}
+
+.top-to-bottom.start {
+	opacity: 1;
+	transition: 0.7s ease-in-out;
+	transform: translateY(0);
+}
+
+.bottom-to-top {
+	opacity: 0;
+	transform: translateY(150%);
+}
+
+.bottom-to-top .start {
+	opacity: 1;
+	transition: 0.7s ease-in-out;
+	transform: translateY(0);
+}
+
+.left-to-right {
+	opacity: 0;
+	transform: translateX(-150%);
+}
+
+.left-to-right.start {
+	opacity: 1;
+	transition: 0.7s ease-in-out;
+	transform: translateX(0);
+}
+
+.right-to-left {
+	opacity: 0;
+	transform: translateX(150%);
+}
+
+.right-to-left.start {
+	opacity: 1;
+	transition: 0.7s ease-in-out;
+	transform: translateX(0);
 }

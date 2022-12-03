@@ -1,0 +1,110 @@
+#EditBook {
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	z-index: 2;
+}
+
+#EditBookForm {
+	width: 30rem;
+	height: 35rem;
+	padding: 1rem;
+	margin-top: 1.5rem;
+	border-radius: 0.5rem;
+	background: rgba(255, 255, 255);
+	animation: showSignInForm linear 0.25s;
+}
+
+#EditBookForm table thead th p {
+	font-size: 1.5rem;
+	padding: 0.5rem 0;
+	color: rgba(12, 12, 12, 0.5);
+}
+
+#EditBookForm form,
+#EditBookForm table {
+	width: 100%;
+	height: 100%;
+}
+
+#EditBookForm table input {
+	width: 100%;
+	padding: 1rem 1.5rem 1rem 2.25rem;
+	font-size: 0.9rem;
+	border: transparent;
+	border-radius: 0.5rem;
+	border: 1px solid rgba(85, 85, 85, 0.5);
+	outline: transparent;
+	background: transparent;
+}
+
+#EditBookForm table select {
+	width: 100%;
+	padding: 0.5rem 3.5rem 0.5rem 2.25rem;
+	font-size: 0.9rem;
+	border-radius: 0.5rem;
+	border: 1px solid rgba(85, 85, 85, 0.5);
+}
+
+#EditBookForm ::placeholder {
+	color: rgba(85, 85, 85, 0.5);
+}
+
+#EditBookForm table tbody tr:nth-child(1),
+#EditBookForm table tbody tr:nth-child(2) {
+	position: relative;
+}
+
+#EditBookForm table input:focus {
+	border-bottom: 1px solid rgba(85, 85, 85, 0.5);
+	outline: 1px solid rgba(85, 85, 85, 0.5);
+}
+
+#EditBookForm table button {
+	width: 100%;
+	padding: 1rem;
+	border-radius: 0.5rem;
+	font-size: 1rem;
+	border: none;
+	outline: none;
+	transition: var(--transition);
+	cursor: pointer;
+	background: #a7a791;
+	color: rgba(255, 255, 255);
+	font-size: 1.25rem;
+}
+
+#EditBookForm table button:hover {
+	background: #bf8f60;
+}
+
+.hide {
+	display: none !important;
+}
+
+@keyframes showSignInForm {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* Tablet Responsive */
+@media only screen and (max-width: 1023px) and (min-width: 740px) {
+}
+
+/* Mobile Responsive */
+@media only screen and (max-width: 739px) {
+	#LoginForm {
+		width: 22rem;
+	}
+}

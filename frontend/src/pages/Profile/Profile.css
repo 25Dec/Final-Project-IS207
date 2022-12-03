@@ -1,0 +1,56 @@
+#Profile {
+	width: 100vw;
+	height: 100vh;
+	background: #f9fbff;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+#Profile h1 {
+	margin: 1.5rem 0;
+	color: #bf8f60;
+	text-transform: uppercase;
+}
+
+#Profile .ProfileCard {
+	width: 55%;
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border-radius: 10px;
+	box-shadow: 0 5px 10px #e1e5ee;
+}
+
+#Profile .ProfileCard div {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+#Profile .ProfileCard div p span:nth-child(1) {
+	font-weight: bold;
+	color: #bf8f60;
+}
+
+#Profile .ProfileCard button {
+	width: 100%;
+	padding: 0.5rem 1rem;
+	margin-top: 1rem;
+	border-radius: 0.5rem;
+	font-size: 1.25rem;
+	border: none;
+	outline: none;
+	transition: var(--transition);
+	cursor: pointer;
+	background: #a7a791;
+	color: rgba(255, 255, 255);
+}
+
+#Profile .ProfileCard button:hover {
+	background: #bf8f60;
+}

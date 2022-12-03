@@ -1,0 +1,48 @@
+nav {
+	position: fixed;
+	bottom: 1rem;
+	left: 50%;
+	transform: translateX(-50%);
+
+	width: max-content;
+	height: 4.25rem;
+	padding: 1rem 2rem;
+	gap: 5rem;
+
+	display: flex;
+	justify-content: space-evenly;
+	background: rgba(85, 85, 85, 0.5);
+	border-radius: 3rem;
+
+	z-index: 1;
+	transition: var(--transition);
+	backdrop-filter: blur(15px);
+}
+nav a {
+	font-size: 1.25rem;
+	padding: 0.5rem;
+	line-height: 0rem;
+
+	border-radius: 50%;
+	color: rgba(255, 255, 255, 0.5);
+	transition: var(--transition);
+
+	background: transparent;
+}
+nav a:hover {
+	background: rgba(85, 85, 85, 0.5);
+}
+nav a.active {
+	background: rgba(85, 85, 85, 0.5);
+	color: rgba(255, 255, 255);
+}
+/* Mobile */
+@media only screen and (max-width: 739px) {
+	nav {
+		width: 100%;
+		bottom: 0;
+		border-radius: 0;
+
+		gap: 2rem;
+	}
+}

@@ -1,0 +1,165 @@
+#SearchBook {
+	width: 80%;
+	height: max-content;
+	margin: 0 auto;
+	padding-bottom: 10rem;
+	background: #f9fbff;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+#SearchBook h1 {
+	margin: 1.5rem 0;
+	color: #bf8f60;
+	text-transform: uppercase;
+}
+
+#SearchBook .options {
+	width: 100%;
+}
+
+#SearchBook .options .inputs {
+	margin-bottom: 1rem;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1rem;
+}
+
+#SearchBook .options .inputs ::placeholder {
+	color: rgba(85, 85, 85, 0.5);
+}
+
+#SearchBook .options .inputs input {
+	width: 100%;
+	margin-top: 0.25rem;
+	padding: 0.5rem 1rem;
+	border: transparent;
+	border-radius: 0.5rem;
+	border: 1px solid rgba(85, 85, 85, 0.5);
+	outline: transparent;
+	background: transparent;
+}
+
+#SearchBook .options .inputs div {
+	display: flex;
+	flex-direction: column;
+}
+
+#SearchBook .options #categories {
+	margin: 0.25rem 0 1.5rem 0;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	row-gap: 0.5rem;
+}
+
+#SearchBook .options #categories .category {
+	display: flex;
+	align-items: center;
+	column-gap: 0.5rem;
+}
+
+#SearchBook .results {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr;
+	row-gap: 1rem;
+}
+
+#SearchBook .results .row {
+	width: 100%;
+	padding: 1rem;
+	border: 1px solid rgba(85, 85, 85, 0.3);
+}
+
+#SearchBook .results .row div {
+	display: flex;
+	align-items: center;
+}
+
+#SearchBook .results .row div svg {
+	cursor: pointer;
+}
+
+#SearchBook .results .row div a:nth-child(1) {
+	color: #bf8f60;
+	margin-right: 0.5rem;
+	font-weight: bold;
+}
+
+#SearchBook .results .row div a:not(#SearchBook .results .row div a:nth-child(1)) {
+	color: black;
+	margin-right: 0.5rem;
+}
+
+#SearchBook .results .row div a:hover {
+	text-decoration: underline;
+}
+
+#SearchBook .results .row div a:nth-child(3) {
+	line-height: 0px;
+}
+
+#SearchBook .results .row div span {
+	font-size: 11px;
+	padding: 3px 7px;
+	margin-right: 0.5rem;
+	font-weight: bold;
+	border-radius: 50px;
+}
+
+#SearchBook .results .row p {
+	margin-top: 1rem;
+}
+
+#SearchBook .results .row .romance {
+	background: pink;
+}
+
+#SearchBook .results .row .mystery {
+	background: purple;
+	color: white;
+}
+
+#SearchBook .results .row .fantasyScienceFiction {
+	background: #ffc107;
+}
+
+#SearchBook .results .row .thrillersHorror {
+	background: #dc3545;
+	color: white;
+}
+
+#SearchBook .results .row .selfHelp {
+	background: #28a745;
+	color: white;
+}
+
+#SearchBook .results .row .shortStories {
+	background: blue;
+	color: white;
+}
+
+#SearchBook .results .row .cookbooks {
+	background: #03f7eb;
+}
+
+#SearchBook .results .row .essays {
+	background: #9dcdc0;
+}
+
+#SearchBook .results .row .history {
+	background: #ac9969;
+	color: white;
+}
+
+#SearchBook .results .row .unknown {
+	background: grey;
+	color: white;
+}
+
+#SearchBook .results .row .other {
+	background: orange;
+	color: white;
+}

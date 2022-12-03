@@ -1,0 +1,73 @@
+#DeleteBook {
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	z-index: 2;
+}
+
+#DeleteBookForm {
+	width: 28rem;
+	height: 30rem;
+	padding: 1rem;
+	margin-top: 1.5rem;
+	border-radius: 0.5rem;
+	background: rgba(255, 255, 255);
+	animation: showSignInForm linear 0.25s;
+}
+
+#DeleteBookForm th {
+	padding: 1rem 2rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1rem;
+	font-weight: 900;
+}
+
+#DeleteBookForm table,
+#DeleteBookForm form {
+	width: 100%;
+	height: 100%;
+}
+
+#DeleteBookForm table tbody {
+	width: 100%;
+	height: 100%;
+}
+
+#DeleteBookForm table tbody tr td {
+	padding-left: 0.5rem;
+}
+
+#DeleteBookForm table tbody tr td span:nth-child(1) {
+	font-weight: bold;
+}
+
+#DeleteBookForm table tbody tr:last-child {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#DeleteBookForm table tbody tr:last-child button {
+	width: 10rem;
+	padding: 0.5rem;
+	margin-right: 1rem;
+	border-radius: 0.5rem;
+	font-size: 1rem;
+	border: none;
+	outline: none;
+	transition: var(--transition);
+	cursor: pointer;
+}
+
+#DeleteBookForm table tbody tr:last-child button:nth-child(1) {
+	background: #a7a791;
+	color: white;
+}
