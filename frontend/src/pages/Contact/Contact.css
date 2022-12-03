@@ -1,0 +1,131 @@
+#Contact {
+	width: 100vw;
+	height: 100vh;
+	background: #f9fbff;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+#Contact h1 {
+	margin: 1.5rem 0;
+	color: #bf8f60;
+	text-transform: uppercase;
+}
+
+.container.contact__container {
+	width: 58%;
+	display: grid;
+	grid-template-columns: 30% 58%;
+	gap: 14%;
+}
+
+.contact__options {
+	display: flex;
+	flex-direction: column;
+	gap: 1.2rem;
+}
+
+.contact__option {
+	padding: 1.5rem;
+	border-radius: 1.2rem;
+	text-align: center;
+	border: 1px solid rgba(85, 85, 85, 0.5);
+	color: rgba(85, 85, 85, 0.9);
+	transition: var(--transition);
+}
+
+.contact__option a {
+	text-decoration: none;
+	color: rgba(85, 85, 85, 0.9);
+	margin-top: 0.7rem;
+	font-size: 0.8rem;
+}
+
+.contact__option a:hover {
+	color: #bf8f60;
+	text-decoration: underline;
+}
+
+.contact__option-icon,
+.contact__option-icon-sent {
+	font-size: 1.5rem;
+	margin-bottom: 0.5rem;
+}
+
+.contact__option.sent {
+	width: 16.5rem;
+	height: 10rem;
+	text-align: center;
+	margin: 10.5rem auto;
+}
+
+.contact__option-icon-sent {
+	margin: 1rem 0;
+}
+
+.contact__container form {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.contact__container input,
+.contact__container textarea {
+	width: 100%;
+	padding: 1rem 1.5rem;
+	border-radius: 0.5rem;
+	background: transparent;
+	border: none;
+	outline: none;
+	resize: none;
+	border: 1px solid rgba(85, 85, 85, 0.5);
+}
+
+.contact__container button {
+	width: 100%;
+	padding: 1rem;
+	border-radius: 0.5rem;
+	font-size: 1rem;
+	border: none;
+	outline: none;
+	transition: var(--transition);
+	cursor: pointer;
+	background: #a7a791;
+	color: rgba(255, 255, 255);
+	font-size: 1.25rem;
+}
+
+.contact__container button:hover {
+	background: #bf8f60;
+}
+/* Tablet */
+@media only screen and (max-width: 1023px) and (min-width: 740px) {
+	.container.contact__container {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+		padding-bottom: 6rem;
+		width: 85%;
+	}
+	.contact__option.sent {
+		width: 100%;
+		margin: 0;
+	}
+}
+/* Mobile */
+@media only screen and (max-width: 739px) {
+	.container.contact__container {
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+		width: 90%;
+		padding-bottom: 5rem;
+	}
+	.contact__container form {
+		align-items: center;
+	}
+	.contact__option.sent {
+		width: 100%;
+		margin: 0;
+	}
+}

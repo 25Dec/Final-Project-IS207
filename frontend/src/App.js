@@ -1,10 +1,21 @@
+import { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/home/Home";
-import Login from "./pages/login/Login";
-import WebAdmin from "./pages/web-admin/WebAdmin";
-import WebGuest from "./pages/web-guest/WebGuest";
-import NotFound from "./pages/notfound/NotFound";
+import Navbar from "./components/Navbar/Navbar";
+import Home from "./pages/Home/Home";
+import ListOfBooks from "./pages/ListOfBooks/ListOfBooks";
+import DetailOfBook from "./pages/DetailOfBook/DetailOfBook";
+import SearchBook from "./pages/SearchBook/SearchBook";
+import SignIn from "./components/SignIn/SignIn";
+import SignUp from "./components/SignUp/SignUp";
+import Profile from "./pages/Profile/Profile";
+import Contact from "./pages/Contact/Contact";
+import Stats from "./pages/Stats/Stats";
+import NotFound from "./pages/NotFound/NotFound";
+import StoreContext from "./context/StoreContextProvider";
 import RequireAuth from "./utils/RequireAuth";
+import Layout from "./components/Layout/Layout";
+import TopQuantityOfEverybook from "./pages/TopQuantityOfEverybook/TopQuantityOfEverybook";
+import TopRatingOfFiveBooks from "./pages/TopRatingOfFiveBooks/TopRatingOfFiveBooks";
 
 const ROLES = {
 	SUPER_ADMIN: "SUPER_ADMIN",
@@ -14,25 +25,45 @@ const ROLES = {
 };
 
 const App = () => {
+	window.onunload = () => {
+		localStorage.removeItem("account");
+	};
+
 	return (
-		<Routes>
-			{/* Public routes */}
-			<Route path="login" element={<Login />} />
+		<>
+			<Navbar />
+			<Routes>
+				<Route path="/" element={<Layout />}>
+					<Route path="/" element={<Home />} />
 
-			{/* Protected routes */}
-			<Route element={<RequireAuth allowedRoles={[ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.END_USER, ROLES.ANONYMOUS]} />}>
-				<Route path="/" element={<Home />} />
-			</Route>
-			<Route element={<RequireAuth allowedRoles={[ROLES.SUPER_ADMIN, ROLES.ADMIN]} />}>
-				<Route path="admin" element={<WebAdmin />} />
-			</Route>
-			<Route element={<RequireAuth allowedRoles={[ROLES.END_USER, ROLES.ANONYMOUS]} />}>
-				<Route path="guest" element={<WebGuest />} />
-			</Route>
+					<Route path="/contact" element={<Contact />} />
 
-			{/* Catch all */}
-			<Route path="*" element={<NotFound />} />
-		</Routes>
+					<Route
+						element={<RequireAuth allowedRoles={[ROLES.ANONYMOUS, ROLES.END_USER, ROLES.ADMIN, ROLES.SUPER_ADMIN]} />}
+					>
+						<Route path="/books" element={<ListOfBooks />} />
+
+						<Route path="/books/:id" element={<DetailOfBook />} />
+
+						<Route path="/search" element={<SearchBook />} />
+
+						<Route path="/signin" element={<SignIn />} />
+
+						<Route path="/signup" element={<SignUp />} />
+
+						<Route path="/profile" element={<Profile />} />
+					</Route>
+
+					<Route element={<RequireAuth allowedRoles={[ROLES.SUPER_ADMIN]} />}>
+						<Route path="/stats" element={<Stats />} />
+						<Route path="/topQuantityOfEverybook" element={<TopQuantityOfEverybook />} />
+						<Route path="/topRatingOfFiveBooks" element={<TopRatingOfFiveBooks />} />
+					</Route>
+
+					<Route path="*" element={<NotFound />} />
+				</Route>
+			</Routes>
+		</>
 	);
 };
 

@@ -1,0 +1,48 @@
+#Stats {
+	width: 100vw;
+	height: 100vh;
+	background: #f9fbff;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+#Stats h1 {
+	margin: 1.5rem 0;
+	color: #bf8f60;
+	text-transform: uppercase;
+}
+
+#Stats > div {
+	width: 85%;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+#Stats > div div {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	width: 25rem;
+	padding: 1.5rem 1rem;
+	margin-bottom: 2rem;
+	border-radius: 1.2rem;
+	text-align: center;
+	border: 1px solid rgba(85, 85, 85, 0.5);
+	color: rgba(85, 85, 85, 0.9);
+}
+
+#Stats > div div a {
+	text-decoration: none;
+	color: rgba(85, 85, 85, 0.9);
+	margin-top: 0.7rem;
+}
+
+#Stats > div div a:hover {
+	color: #bf8f60;
+	text-decoration: underline;
+}

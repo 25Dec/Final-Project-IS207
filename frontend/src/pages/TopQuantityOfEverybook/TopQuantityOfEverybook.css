@@ -1,0 +1,52 @@
+#TopQuantityOfEverybook {
+	width: 100vw;
+	height: 100vh;
+	background: #f9fbff;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+#TopQuantityOfEverybook h1 {
+	margin: 1.5rem 0;
+	color: #bf8f60;
+	text-transform: uppercase;
+}
+
+#TopQuantityOfEverybook table {
+	width: 80%;
+	border-collapse: collapse;
+	box-shadow: 0 5px 10px #e1e5ee;
+	background-color: white;
+	text-align: center;
+	overflow: hidden;
+}
+
+#TopQuantityOfEverybook table thead {
+	box-shadow: 0 5px 10px #e1e5ee;
+}
+
+#TopQuantityOfEverybook table th {
+	padding: 1rem 2rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1rem;
+	font-size: 0.7rem;
+	font-weight: 900;
+}
+
+#TopQuantityOfEverybook table td {
+	padding: 1rem 2rem;
+}
+
+#TopQuantityOfEverybook table .bookName {
+	color: #bf8f60;
+}
+
+#TopQuantityOfEverybook table a:hover {
+	text-decoration: underline;
+}
+
+#TopQuantityOfEverybook table tr:nth-child(even) {
+	background-color: #f4f6fb;
+}
